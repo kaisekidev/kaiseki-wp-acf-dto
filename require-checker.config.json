@@ -10,6 +10,7 @@
         "acf_get_users",
         "add_action",
         "add_filter",
+        "get_avatar",
         "get_fields",
         "get_post",
         "get_term",

@@ -2,28 +2,27 @@
 
 declare(strict_types=1);
 
-namespace Kaiseki\WordPress\ACF\Dto\Casts;
+namespace Kaiseki\WordPress\ACF\Dto\Cast;
 
-use Respect\Validation\Validator;
 use Spatie\LaravelData\Casts\Cast;
 use Spatie\LaravelData\Support\DataProperty;
 
 use function is_string;
 
-class Email implements Cast
+class DateTime implements Cast
 {
     /**
      * @param DataProperty $property
      * @param mixed        $value
      * @param array<mixed> $context
      *
-     * @return string|null
+     * @return \Safe\DateTimeImmutable|null
      */
-    public function cast(DataProperty $property, mixed $value, array $context): ?string
+    public function cast(DataProperty $property, mixed $value, array $context): ?\Safe\DateTimeImmutable
     {
         if (!is_string($value) || $value === '') {
             return null;
         }
-        return Validator::email()->validate($value) ? $value : null;
+        return new \Safe\DateTimeImmutable($value, wp_timezone());
     }
 }

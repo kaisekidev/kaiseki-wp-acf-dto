@@ -2,7 +2,7 @@
 
 declare(strict_types=1);
 
-namespace Kaiseki\WordPress\ACF\Dto\Casts;
+namespace Kaiseki\WordPress\ACF\Dto\Cast;
 
 use Spatie\LaravelData\Casts\Cast;
 use Spatie\LaravelData\Casts\Castable;
@@ -20,7 +20,7 @@ class WpPosts implements Castable
         /** @var list<WpPost> */
         private readonly array $postDataObjects,
         /** @var string|list<string> */
-        private readonly string|array $postTypes = 'any',
+        private readonly string|array $postTypes = '',
     ) {
     }
 

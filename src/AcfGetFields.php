@@ -4,6 +4,7 @@ declare(strict_types=1);
 
 namespace Kaiseki\WordPress\ACF\Dto;
 
+use function function_exists;
 use function in_array;
 
 class AcfGetFields
@@ -11,7 +12,7 @@ class AcfGetFields
     /**
      * @param array<string> $excludeFromFormatting
      *
-     * @return array<string, mixed>
+     * @return array<string, mixed>|null
      */
     public function getFields(
         mixed $postId = false,
@@ -26,7 +27,10 @@ class AcfGetFields
             'date_picker',
             'date_time_picker',
         ],
-    ): array {
+    ): ?array {
+        if (!function_exists('get_fields')) {
+            return null;
+        }
         $filter = function (
             mixed $check,
             mixed $value,
@@ -48,7 +52,7 @@ class AcfGetFields
     /**
      * @param array<string> $format
      *
-     * @return array<string, mixed>
+     * @return array<string, mixed>|null
      */
     public function getRawFields(
         mixed $postId = false,
@@ -62,7 +66,10 @@ class AcfGetFields
             'true_false',
             'button_group',
         ],
-    ): array {
+    ): ?array {
+        if (!function_exists('get_fields')) {
+            return null;
+        }
         $filter = function (
             mixed $check,
             mixed $value,

@@ -2,7 +2,7 @@
 
 declare(strict_types=1);
 
-namespace Kaiseki\WordPress\ACF\Dto\Casts;
+namespace Kaiseki\WordPress\ACF\Dto\Cast;
 
 use Spatie\LaravelData\Casts\Cast;
 use Spatie\LaravelData\Casts\Castable;
@@ -36,13 +36,10 @@ class WpTerms implements Castable
      */
     public function getTerms(): array
     {
-        return acf_get_terms(
-            [
-                'taxonomy'   => $this->taxonomy,
-                'include'    => $this->ids,
-                'hide_empty' => false,
-            ]
-        );
+        return acf_get_terms([
+            'taxonomy'   => $this->taxonomy,
+            'include'    => $this->ids,
+        ]);
     }
 
     /**

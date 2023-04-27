@@ -2,7 +2,7 @@
 
 declare(strict_types=1);
 
-namespace Kaiseki\WordPress\ACF\Dto\Casts;
+namespace Kaiseki\WordPress\ACF\Dto\Cast;
 
 use Respect\Validation\Validator;
 use Spatie\LaravelData\Casts\Cast;
@@ -10,7 +10,7 @@ use Spatie\LaravelData\Support\DataProperty;
 
 use function is_string;
 
-class Url implements Cast
+class Email implements Cast
 {
     /**
      * @param DataProperty $property
@@ -24,6 +24,6 @@ class Url implements Cast
         if (!is_string($value) || $value === '') {
             return null;
         }
-        return Validator::url()->validate($value) ? $value : null;
+        return Validator::email()->validate($value) ? $value : null;
     }
 }

@@ -2,7 +2,7 @@
 
 declare(strict_types=1);
 
-namespace Kaiseki\WordPress\ACF\Dto\Casts;
+namespace Kaiseki\WordPress\ACF\Dto\Cast;
 
 use Spatie\LaravelData\Attributes\WithCast;
 use Spatie\LaravelData\Casts\Cast;
@@ -12,7 +12,7 @@ use Spatie\LaravelData\Support\DataProperty;
 use function is_array;
 use function is_numeric;
 
-class WpTerm implements Castable
+class WpPost implements Castable
 {
     public function __construct(
         #[WithCast(ID::class)]
@@ -20,18 +20,17 @@ class WpTerm implements Castable
     ) {
     }
 
-    public function getTermId(): ?int
+    public function getPostId(): ?int
     {
         return $this->id;
     }
 
-    public function getTerm(): ?\WP_Term
+    /**
+     * @return \WP_Post|null
+     */
+    public function getPost(): ?\WP_Post
     {
-        if ($this->id === null) {
-            return null;
-        }
-        $term = get_term($this->id);
-        return $term instanceof \WP_Term ? $term : null;
+        return get_post($this->id);
     }
 
     /**
@@ -47,18 +46,17 @@ class WpTerm implements Castable
              * @param mixed        $value
              * @param array<mixed> $context
              *
-             * @return WpTerm|null
+             * @return WpPost|null
              */
-            public function cast(DataProperty $property, mixed $value, array $context): ?WpTerm
+            public function cast(DataProperty $property, mixed $value, array $context): ?WpPost
             {
-                if ($value instanceof \WP_Term) {
-                    // phpcs:disable Squiz.NamingConventions.ValidVariableName.MemberNotCamelCaps
-                    return new WpTerm($value->term_id);
+                if ($value instanceof \WP_Post) {
+                    return new WpPost($value->ID);
                 }
                 if (is_array($value) && isset($value['ID'])) {
-                    return new WpTerm((int)$value['ID']);
+                    return new WpPost((int)$value['ID']);
                 }
-                return is_numeric($value) ? new WpTerm((int)$value) : null;
+                return is_numeric($value) ? new WpPost((int)$value) : null;
             }
         };
     }
