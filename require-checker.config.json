@@ -1,0 +1,35 @@
+{
+    "symbol-whitelist" : [
+        "null", "true", "false",
+        "static", "self", "parent",
+        "array", "string", "int", "float", "bool", "iterable", "callable", "void", "object",
+        "acf_get_attachment",
+        "acf_get_posts",
+        "acf_get_post_types",
+        "acf_get_terms",
+        "acf_get_users",
+        "add_action",
+        "add_filter",
+        "get_fields",
+        "get_post",
+        "get_term",
+        "get_user_by",
+        "mixed",
+        "remove_filter",
+        "wp_get_attachment_url",
+        "WP_Post",
+        "WP_Term",
+        "wp_timezone",
+        "WP_User"
+    ],
+    "php-core-extensions" : [
+        "Core",
+        "date",
+        "pcre",
+        "Phar",
+        "Reflection",
+        "SPL",
+        "standard"
+    ],
+    "scan-files": []
+}
