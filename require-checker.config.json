@@ -21,7 +21,8 @@
         "WP_Post",
         "WP_Term",
         "wp_timezone",
-        "WP_User"
+        "WP_User",
+        "Illuminate\\Contracts\\Support\\Arrayable"
     ],
     "php-core-extensions" : [
         "Core",
