@@ -8,7 +8,9 @@ use Kaiseki\WordPress\ACF\Dto\Casts\WpPostsCast;
 use Kaiseki\WordPress\ACF\Exceptions\InvalidAttributeType;
 use Spatie\LaravelData\Casts\Cast;
 use Spatie\LaravelData\Casts\Castable;
+use WP_Post;
 
+use function count;
 use function function_exists;
 use function is_array;
 use function is_string;
@@ -23,6 +25,8 @@ class WpPostsCastable implements Castable
         private readonly array $ids,
         /** @var string|list<string> */
         private readonly string|array $postTypes = '',
+        /** @var list<WP_Post> */
+        private array $posts = [],
     ) {
     }
 
@@ -35,15 +39,19 @@ class WpPostsCastable implements Castable
     }
 
     /**
-     * @return list<\WP_Post>
+     * @return list<WP_Post>
      */
     public function getPosts(): array
     {
+        if (count($this->posts) > 0) {
+            return $this->posts;
+        }
+
         if (!function_exists('acf_get_posts')) {
             return [];
         }
 
-        return acf_get_posts([
+        return $this->posts = acf_get_posts([
             'post__in'      => $this->ids,
             'post_type'     => $this->postTypes,
             'no_found_rows' => true,

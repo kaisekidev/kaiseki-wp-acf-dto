@@ -8,6 +8,7 @@ use Kaiseki\WordPress\ACF\Dto\Casts\WpTermCast;
 use Kaiseki\WordPress\ACF\Exceptions\MissingAttribute;
 use Spatie\LaravelData\Casts\Cast;
 use Spatie\LaravelData\Casts\Castable;
+use WP_Term;
 
 use function count;
 use function current;
@@ -19,6 +20,7 @@ class WpTermCastable implements Castable
     public function __construct(
         private readonly int $id,
         private readonly string $taxonomy = 'category',
+        private ?WP_Term $term = null,
     ) {
     }
 
@@ -29,6 +31,10 @@ class WpTermCastable implements Castable
 
     public function getTerm(): ?\WP_Term
     {
+        if ($this->term !== null) {
+            return $this->term;
+        }
+
         if (!function_exists('acf_get_terms')) {
             return null;
         }
@@ -42,7 +48,7 @@ class WpTermCastable implements Castable
         );
 
         if (count($terms) > 0) {
-            return current($terms);
+            return $this->term = current($terms);
         }
 
         return null;

@@ -17,6 +17,7 @@ class WpUserCastable implements Castable
 {
     public function __construct(
         private readonly int $id,
+        private ?WP_User $user = null,
     ) {
     }
 
@@ -27,6 +28,10 @@ class WpUserCastable implements Castable
 
     public function getUser(): ?WP_User
     {
+        if ($this->user !== null) {
+            return $this->user;
+        }
+
         if (!function_exists('acf_get_users')) {
             return null;
         }
@@ -36,7 +41,7 @@ class WpUserCastable implements Castable
         ]);
 
         if (count($users) > 0) {
-            return current($users);
+            return $this->user = current($users);
         }
 
         return null;

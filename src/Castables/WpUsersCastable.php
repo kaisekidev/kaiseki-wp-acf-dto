@@ -18,6 +18,8 @@ class WpUsersCastable implements Castable
     public function __construct(
         /** @var array<int> */
         private readonly array $ids,
+        /** @var list<WP_User> */
+        private array $users = [],
     ) {
     }
 
@@ -34,11 +36,15 @@ class WpUsersCastable implements Castable
      */
     public function getUsers(): array
     {
+        if (count($this->users) > 0) {
+            return $this->users;
+        }
+
         if (count($this->ids) < 1 || !function_exists('acf_get_users')) {
             return [];
         }
 
-        return acf_get_users([
+        return $this->users = acf_get_users([
             'include' => $this->ids,
         ]);
     }

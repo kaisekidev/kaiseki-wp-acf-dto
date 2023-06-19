@@ -26,7 +26,10 @@ class WpUserCast implements Cast
     public function cast(DataProperty $property, mixed $value, array $context): ?WpUserCastable
     {
         $userId = self::getUserId($value);
-        return $userId !== null ? new WpUserCastable($userId) : null;
+        return $userId !== null ? new WpUserCastable(
+            $userId,
+            $value instanceof WP_User ? $value : null,
+        ) : null;
     }
 
     public static function getUserId(mixed $value): ?int

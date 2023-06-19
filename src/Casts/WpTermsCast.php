@@ -8,8 +8,8 @@ use Attribute;
 use Kaiseki\WordPress\ACF\Dto\Castables\WpTermsCastable;
 use Spatie\LaravelData\Casts\Cast;
 use Spatie\LaravelData\Support\DataProperty;
+use WP_Term;
 
-use function array_reduce;
 use function is_array;
 
 #[Attribute(Attribute::TARGET_CLASS | Attribute::TARGET_PROPERTY)]
@@ -32,13 +32,23 @@ class WpTermsCast implements Cast
         if (!is_array($value)) {
             return new WpTermsCastable([], $this->taxonomy);
         }
-        $ids = array_reduce($value, function ($carry, $item) {
-            $postId = WpTermCast::getTermId($item);
-            if ($postId !== null) {
-                $carry[] = $postId;
+
+        $ids = [];
+        $terms = [];
+
+
+        foreach ($value as $item) {
+            $termId = WpTermCast::getTermId($item);
+            if ($termId !== null) {
+                $ids[] = $termId;
             }
-            return $carry;
-        }, []);
-        return new WpTermsCastable($ids, $this->taxonomy);
+            if (!($item instanceof WP_Term)) {
+                continue;
+            }
+
+            $terms[] = $item;
+        }
+
+        return new WpTermsCastable($ids, $this->taxonomy, $terms);
     }
 }

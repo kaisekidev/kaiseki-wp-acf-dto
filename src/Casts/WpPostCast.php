@@ -8,6 +8,7 @@ use Attribute;
 use Kaiseki\WordPress\ACF\Dto\Castables\WpPostCastable;
 use Spatie\LaravelData\Casts\Cast;
 use Spatie\LaravelData\Support\DataProperty;
+use WP_Post;
 
 use function is_array;
 use function is_numeric;
@@ -31,7 +32,11 @@ class WpPostCast implements Cast
     public function cast(DataProperty $property, mixed $value, array $context): ?WpPostCastable
     {
         $postId = self::getPostId($value);
-        return $postId !== null ? new WpPostCastable($postId, $this->postType) : null;
+        return $postId !== null ? new WpPostCastable(
+            $postId,
+            $this->postType,
+            $value instanceof WP_Post ? $value : null,
+        ) : null;
     }
 
     public static function getPostId(mixed $value): ?int

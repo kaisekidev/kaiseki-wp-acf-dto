@@ -23,6 +23,8 @@ class WpTermsCastable implements Castable
         private readonly array $ids,
         /** @var string */
         private readonly string $taxonomy,
+        /** @var list<WP_Term> */
+        private array $terms = [],
     ) {
     }
 
@@ -39,11 +41,15 @@ class WpTermsCastable implements Castable
      */
     public function getTerms(): array
     {
+        if (count($this->terms) > 0) {
+            return $this->terms;
+        }
+
         if (count($this->ids) < 1 || !function_exists('acf_get_terms')) {
             return [];
         }
 
-        return acf_get_terms([
+        return $this->terms = acf_get_terms([
             'taxonomy'   => $this->taxonomy,
             'include'    => $this->ids,
         ]);

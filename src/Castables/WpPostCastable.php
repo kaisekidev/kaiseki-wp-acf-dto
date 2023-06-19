@@ -25,6 +25,7 @@ class WpPostCastable implements Castable
         private readonly ?int $id = null,
         /** @var string|list<string> */
         private readonly string|array $postType = '',
+        private ?WP_Post $post = null,
     ) {
     }
 
@@ -38,6 +39,10 @@ class WpPostCastable implements Castable
      */
     public function getPost(): ?WP_Post
     {
+        if ($this->post !== null) {
+            return $this->post;
+        }
+
         if (!function_exists('acf_get_posts')) {
             return null;
         }
@@ -49,7 +54,7 @@ class WpPostCastable implements Castable
         ]);
 
         if (count($posts) > 0) {
-            return current($posts);
+            return $this->post = current($posts);
         }
 
         return null;

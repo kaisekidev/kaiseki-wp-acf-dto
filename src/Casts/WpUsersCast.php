@@ -9,7 +9,6 @@ use Kaiseki\WordPress\ACF\Dto\Castables\WpUsersCastable;
 use Spatie\LaravelData\Casts\Cast;
 use Spatie\LaravelData\Support\DataProperty;
 
-use function array_reduce;
 use function is_array;
 
 #[Attribute(Attribute::TARGET_CLASS | Attribute::TARGET_PROPERTY)]
@@ -27,13 +26,22 @@ class WpUsersCast implements Cast
         if (!is_array($value)) {
             return new WpUsersCastable([]);
         }
-        $ids = array_reduce($value, function ($carry, $item) {
-            $postId = WpUserCast::getUserId($item);
-            if ($postId !== null) {
-                $carry[] = $postId;
+
+        $ids = [];
+        $users = [];
+
+        foreach ($value as $item) {
+            $userId = WpUserCast::getUserId($item);
+            if ($userId !== null) {
+                $ids[] = $userId;
             }
-            return $carry;
-        }, []);
-        return new WpUsersCastable($ids);
+            if (!($item instanceof \WP_User)) {
+                continue;
+            }
+
+            $users[] = $item;
+        }
+
+        return new WpUsersCastable($ids, $users);
     }
 }

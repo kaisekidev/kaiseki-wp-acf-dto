@@ -8,8 +8,8 @@ use Attribute;
 use Kaiseki\WordPress\ACF\Dto\Castables\WpPostsCastable;
 use Spatie\LaravelData\Casts\Cast;
 use Spatie\LaravelData\Support\DataProperty;
+use WP_Post;
 
-use function array_reduce;
 use function is_array;
 
 #[Attribute(Attribute::TARGET_CLASS | Attribute::TARGET_PROPERTY)]
@@ -33,13 +33,22 @@ class WpPostsCast implements Cast
         if (!is_array($value)) {
             return new WpPostsCastable([], $this->postType);
         }
-        $ids = array_reduce($value, function ($carry, $item) {
+
+        $ids = [];
+        $posts = [];
+
+        foreach ($value as $item) {
             $postId = WpPostCast::getPostId($item);
             if ($postId !== null) {
-                $carry[] = $postId;
+                $ids[] = $postId;
             }
-            return $carry;
-        }, []);
-        return new WpPostsCastable($ids, $this->postType);
+            if (!($item instanceof WP_Post)) {
+                continue;
+            }
+
+            $posts[] = $item;
+        }
+
+        return new WpPostsCastable($ids, $this->postType, $posts);
     }
 }
