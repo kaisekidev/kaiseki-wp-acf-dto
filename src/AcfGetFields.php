@@ -17,12 +17,6 @@ class AcfGetFields
     public function getFields(
         mixed $postId = false,
         array $excludeFromFormatting = [
-            'link',
-            'post_object',
-            'page_link',
-            'relationship',
-            'taxonomy',
-            'user',
             'time_picker',
             'date_picker',
             'date_time_picker',
@@ -44,8 +38,10 @@ class AcfGetFields
             return null;
         };
         add_filter('acf/pre_format_value', $filter, 10, 4);
+        add_filter('acf/format_value', [$this, 'normalizeEmptyFieldValues'], 10, 3);
         $values = get_fields($postId);
         remove_filter('acf/pre_format_value', $filter);
+        remove_filter('acf/format_value', [$this, 'normalizeEmptyFieldValues']);
         return $values;
     }
 
@@ -83,8 +79,22 @@ class AcfGetFields
             return $value;
         };
         add_filter('acf/pre_format_value', $filter, 10, 4);
+        add_filter('acf/format_value', [$this, 'normalizeEmptyFieldValues'], 10, 3);
         $values = get_fields($postId);
         remove_filter('acf/pre_format_value', $filter);
+        remove_filter('acf/format_value', [$this, 'normalizeEmptyFieldValues']);
         return $values;
+    }
+
+    /**
+     * @param array<string, mixed> $field
+     *
+     * @return mixed
+     */
+    public function normalizeEmptyFieldValues(mixed $value, mixed $postId, array $field): mixed
+    {
+        return isset($field['type']) && $field['type'] !== 'true_false' && $value === false
+            ? null
+            : $value;
     }
 }
