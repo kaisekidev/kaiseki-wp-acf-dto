@@ -4,12 +4,12 @@ declare(strict_types=1);
 
 namespace Kaiseki\WordPress\ACF\Dto\Castables;
 
-use Kaiseki\WordPress\ACF\Dto\Casts\LinkCast;
+use Kaiseki\WordPress\ACF\Dto\Casts\GoogleMapCast;
 use Spatie\LaravelData\Casts\Cast;
 use Spatie\LaravelData\Casts\Castable;
 use Spatie\LaravelData\Data;
 
-class LinkCastable extends Data implements Castable
+class GoogleMapCastable extends Data implements Castable
 {
     public function __construct(
         public readonly ?string $title = null,
@@ -25,6 +25,6 @@ class LinkCastable extends Data implements Castable
      */
     public static function dataCastUsing(...$arguments): Cast
     {
-        return new LinkCast();
+        return new GoogleMapCast();
     }
 }
