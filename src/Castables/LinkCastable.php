@@ -4,7 +4,7 @@ declare(strict_types=1);
 
 namespace Kaiseki\WordPress\ACF\Dto\Castables;
 
-use Kaiseki\WordPress\ACF\Dto\Cast\LinkCast;
+use Kaiseki\WordPress\ACF\Dto\Casts\LinkCast;
 use Spatie\LaravelData\Casts\Cast;
 use Spatie\LaravelData\Casts\Castable;
 

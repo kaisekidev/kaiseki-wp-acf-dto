@@ -4,7 +4,7 @@ declare(strict_types=1);
 
 namespace Kaiseki\WordPress\ACF\Dto\Castables;
 
-use Kaiseki\WordPress\ACF\Dto\Cast\GalleryCast;
+use Kaiseki\WordPress\ACF\Dto\Casts\GalleryCast;
 use Spatie\LaravelData\Casts\Cast;
 use Spatie\LaravelData\Casts\Castable;
 
