@@ -12,6 +12,10 @@ use WP_Post;
 use function count;
 use function current;
 use function function_exists;
+use function is_string;
+use function trigger_error;
+
+use const E_USER_WARNING;
 
 class WpPostCastable implements Castable
 {
@@ -56,6 +60,10 @@ class WpPostCastable implements Castable
      */
     public static function dataCastUsing(...$arguments): Cast
     {
-        return new WpPostCast();
+        if (!is_string($arguments[0])) {
+            trigger_error('Missing WithCastable attribute "postType" for WpPostCastable', E_USER_WARNING);
+        }
+        $postType = $arguments[0] ?? '';
+        return new WpPostCast($postType);
     }
 }

@@ -5,6 +5,7 @@ declare(strict_types=1);
 namespace Kaiseki\WordPress\ACF\Dto\Castables;
 
 use Kaiseki\WordPress\ACF\Dto\Casts\WpTermCast;
+use Kaiseki\WordPress\ACF\Exceptions\MissingAttributeException;
 use Spatie\LaravelData\Casts\Cast;
 use Spatie\LaravelData\Casts\Castable;
 
@@ -54,7 +55,9 @@ class WpTermCastable implements Castable
      */
     public static function dataCastUsing(...$arguments): Cast
     {
-        $taxonomy = is_string($arguments[0]) ? $arguments[0] : 'category';
-        return new WpTermCast($taxonomy);
+        if (!is_string($arguments[0])) {
+            throw MissingAttributeException::castableMissingAttribute('taxonomy');
+        }
+        return new WpTermCast($arguments[0]);
     }
 }

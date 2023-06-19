@@ -9,6 +9,10 @@ use Spatie\LaravelData\Casts\Cast;
 use Spatie\LaravelData\Casts\Castable;
 
 use function function_exists;
+use function is_string;
+use function trigger_error;
+
+use const E_USER_WARNING;
 
 class WpPostsCastable implements Castable
 {
@@ -51,6 +55,10 @@ class WpPostsCastable implements Castable
      */
     public static function dataCastUsing(...$arguments): Cast
     {
-        return new WpPostsCast();
+        if (!is_string($arguments[0])) {
+            trigger_error('Missing WithCastable attribute "postType" for WpPostsCastable', E_USER_WARNING);
+        }
+        $postType = $arguments[0] ?? '';
+        return new WpPostsCast($postType);
     }
 }
