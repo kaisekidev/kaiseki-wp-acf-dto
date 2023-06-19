@@ -6,7 +6,7 @@ namespace Kaiseki\WordPress\ACF\Exceptions;
 
 use Exception;
 
-class MissingAttributeException extends Exception
+class MissingAttribute extends Exception
 {
     public static function castMissingAttribute(string $name): self
     {

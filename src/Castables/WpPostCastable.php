@@ -5,6 +5,7 @@ declare(strict_types=1);
 namespace Kaiseki\WordPress\ACF\Dto\Castables;
 
 use Kaiseki\WordPress\ACF\Dto\Casts\WpPostCast;
+use Kaiseki\WordPress\ACF\Exceptions\InvalidAttributeType;
 use Spatie\LaravelData\Casts\Cast;
 use Spatie\LaravelData\Casts\Castable;
 use WP_Post;
@@ -12,6 +13,7 @@ use WP_Post;
 use function count;
 use function current;
 use function function_exists;
+use function is_array;
 use function is_string;
 use function trigger_error;
 
@@ -60,10 +62,13 @@ class WpPostCastable implements Castable
      */
     public static function dataCastUsing(...$arguments): Cast
     {
-        if (!is_string($arguments[0])) {
+        if (!isset($arguments[0])) {
             trigger_error('Missing WithCastable attribute "postType" for WpPostCastable', E_USER_WARNING);
         }
         $postType = $arguments[0] ?? '';
+        if (!is_string($postType) && !is_array($postType)) {
+            throw InvalidAttributeType::create('postType', 'string|array');
+        }
         return new WpPostCast($postType);
     }
 }
