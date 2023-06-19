@@ -4,16 +4,14 @@ declare(strict_types=1);
 
 namespace Kaiseki\WordPress\ACF\Dto\Castables;
 
+use Kaiseki\WordPress\ACF\Dto\Casts\WpPostCast;
 use Spatie\LaravelData\Casts\Cast;
 use Spatie\LaravelData\Casts\Castable;
-use Spatie\LaravelData\Support\DataProperty;
 use WP_Post;
 
 use function count;
 use function current;
 use function function_exists;
-use function is_array;
-use function is_numeric;
 
 class WpPostCastable implements Castable
 {
@@ -58,30 +56,6 @@ class WpPostCastable implements Castable
      */
     public static function dataCastUsing(...$arguments): Cast
     {
-        return new class implements Cast {
-            /**
-             * @param DataProperty $property
-             * @param mixed        $value
-             * @param array<mixed> $context
-             *
-             * @return WpPostCastable
-             */
-            public function cast(DataProperty $property, mixed $value, array $context): WpPostCastable
-            {
-                $postId = self::resolvePostId($value);
-                return new WpPostCastable($postId);
-            }
-
-            private static function resolvePostId(mixed $value): ?int
-            {
-                if (is_numeric($value)) {
-                    return (int)$value;
-                }
-                if (is_array($value) && isset($value['ID'])) {
-                    return (int)$value['ID'];
-                }
-                return $value instanceof \WP_Post ? $value->ID : null;
-            }
-        };
+        return new WpPostCast();
     }
 }

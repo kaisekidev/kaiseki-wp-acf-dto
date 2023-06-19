@@ -32,17 +32,20 @@ class LinkCastable implements Castable
              * @param mixed        $value
              * @param array<mixed> $context
              *
-             * @return LinkCastable
+             * @return LinkCastable|null
              */
-            public function cast(DataProperty $property, mixed $value, array $context): LinkCastable
+            public function cast(DataProperty $property, mixed $value, array $context): ?LinkCastable
             {
-                if (!is_array($value)) {
-                    return new LinkCastable();
+                if (
+                    !is_array($value)
+                    || !isset($value['title'], $value['url'], $value['target'])
+                ) {
+                    return null;
                 }
                 return new LinkCastable(
-                    $value['title'] ?? '',
-                    $value['url'] ?? '',
-                    $value['target'] ?? '',
+                    $value['title'],
+                    $value['url'],
+                    $value['target'],
                 );
             }
         };

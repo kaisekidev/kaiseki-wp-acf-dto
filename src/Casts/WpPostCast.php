@@ -6,7 +6,6 @@ namespace Kaiseki\WordPress\ACF\Dto\Casts;
 
 use Attribute;
 use Kaiseki\WordPress\ACF\Dto\DataObjects\WpPost;
-use Spatie\LaravelData\Attributes\GetsCast;
 use Spatie\LaravelData\Casts\Cast;
 use Spatie\LaravelData\Support\DataProperty;
 
@@ -14,36 +13,25 @@ use function is_array;
 use function is_numeric;
 
 #[Attribute(Attribute::TARGET_CLASS | Attribute::TARGET_PROPERTY)]
-class WpPostCast implements GetsCast
+class WpPostCast implements Cast
 {
     public function __construct(
         /** @var string|list<string> */
-        private readonly string|array $postType = ''
+        private readonly string|array $postType = '',
     ) {
     }
 
-    public function get(): Cast
+    /**
+     * @param DataProperty $property
+     * @param mixed        $value
+     * @param array<mixed> $context
+     *
+     * @return WpPost|null
+     */
+    public function cast(DataProperty $property, mixed $value, array $context): ?WpPost
     {
-        return new class ($this->postType) implements Cast {
-            public function __construct(
-                /** @var string|list<string> */
-                private readonly string|array $postType = '',
-            ) {
-            }
-
-            /**
-             * @param DataProperty $property
-             * @param mixed        $value
-             * @param array<mixed> $context
-             *
-             * @return WpPost|null
-             */
-            public function cast(DataProperty $property, mixed $value, array $context): ?WpPost
-            {
-                $postId = WpPostCast::getPostId($value);
-                return $postId !== null ? new WpPost($postId, $this->postType) : null;
-            }
-        };
+        $postId = self::getPostId($value);
+        return $postId !== null ? new WpPost($postId, $this->postType) : null;
     }
 
     public static function getPostId(mixed $value): ?int

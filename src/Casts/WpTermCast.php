@@ -6,7 +6,6 @@ namespace Kaiseki\WordPress\ACF\Dto\Casts;
 
 use Attribute;
 use Kaiseki\WordPress\ACF\Dto\DataObjects\WpTerm;
-use Spatie\LaravelData\Attributes\GetsCast;
 use Spatie\LaravelData\Casts\Cast;
 use Spatie\LaravelData\Support\DataProperty;
 use WP_Term;
@@ -15,34 +14,24 @@ use function is_array;
 use function is_numeric;
 
 #[Attribute(Attribute::TARGET_CLASS | Attribute::TARGET_PROPERTY)]
-class WpTermCast implements GetsCast
+class WpTermCast implements Cast
 {
     public function __construct(
         private readonly string $taxonomy
     ) {
     }
 
-    public function get(): Cast
+    /**
+     * @param DataProperty $property
+     * @param mixed        $value
+     * @param array<mixed> $context
+     *
+     * @return WpTerm|null
+     */
+    public function cast(DataProperty $property, mixed $value, array $context): ?WpTerm
     {
-        return new class ($this->taxonomy) implements Cast {
-            public function __construct(
-                private readonly string $taxonomy
-            ) {
-            }
-
-            /**
-             * @param DataProperty $property
-             * @param mixed        $value
-             * @param array<mixed> $context
-             *
-             * @return WpTerm|null
-             */
-            public function cast(DataProperty $property, mixed $value, array $context): ?WpTerm
-            {
-                $termId = WpTermCast::getTermId($value);
-                return $termId !== null ? new WpTerm($termId, $this->taxonomy) : null;
-            }
-        };
+        $termId = self::getTermId($value);
+        return $termId !== null ? new WpTerm($termId, $this->taxonomy) : null;
     }
 
     public static function getTermId(mixed $value): ?int
