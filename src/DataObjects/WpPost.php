@@ -2,7 +2,7 @@
 
 declare(strict_types=1);
 
-namespace Kaiseki\WordPress\ACF\Dto\Object;
+namespace Kaiseki\WordPress\ACF\Dto\DataObjects;
 
 use WP_Post;
 

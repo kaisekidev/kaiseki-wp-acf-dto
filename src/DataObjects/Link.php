@@ -2,9 +2,9 @@
 
 declare(strict_types=1);
 
-namespace Kaiseki\WordPress\ACF\Dto\Data;
+namespace Kaiseki\WordPress\ACF\Dto\DataObjects;
 
-use Kaiseki\WordPress\ACF\Dto\Cast\Url;
+use Kaiseki\WordPress\ACF\Dto\Casts\UrlCast;
 use Spatie\LaravelData\Attributes\MapName;
 use Spatie\LaravelData\Attributes\MapOutputName;
 use Spatie\LaravelData\Attributes\WithCast;
@@ -17,7 +17,7 @@ class Link extends Data
 {
     public function __construct(
         public readonly ?string $title,
-        #[WithCast(Url::class)]
+        #[WithCast(UrlCast::class)]
         public readonly ?string $url,
         public readonly ?string $target,
     ) {

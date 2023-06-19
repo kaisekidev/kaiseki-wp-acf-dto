@@ -2,7 +2,7 @@
 
 declare(strict_types=1);
 
-namespace Kaiseki\WordPress\ACF\Dto\Cast;
+namespace Kaiseki\WordPress\ACF\Dto\Casts;
 
 use Spatie\LaravelData\Casts\Cast;
 use Spatie\LaravelData\Support\DataProperty;
@@ -13,7 +13,7 @@ use function is_int;
 use function is_numeric;
 use function str_contains;
 
-class Number implements Cast
+class NumberCast implements Cast
 {
     /**
      * @param DataProperty $property

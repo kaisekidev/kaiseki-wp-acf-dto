@@ -2,10 +2,10 @@
 
 declare(strict_types=1);
 
-namespace Kaiseki\WordPress\ACF\Dto\Cast;
+namespace Kaiseki\WordPress\ACF\Dto\Casts;
 
 use Attribute;
-use Kaiseki\WordPress\ACF\Dto\Object\WpUsers;
+use Kaiseki\WordPress\ACF\Dto\DataObjects\WpTerms;
 use Spatie\LaravelData\Attributes\GetsCast;
 use Spatie\LaravelData\Casts\Cast;
 use Spatie\LaravelData\Support\DataProperty;
@@ -14,31 +14,41 @@ use function array_reduce;
 use function is_array;
 
 #[Attribute(Attribute::TARGET_CLASS | Attribute::TARGET_PROPERTY)]
-class WithWpUsers implements GetsCast
+class WpTermsCast implements GetsCast
 {
+    public function __construct(
+        private readonly string $taxonomy
+    ) {
+    }
+
     public function get(): Cast
     {
-        return new class implements Cast {
+        return new class ($this->taxonomy) implements Cast {
+            public function __construct(
+                private readonly string $taxonomy
+            ) {
+            }
+
             /**
              * @param DataProperty $property
              * @param mixed        $value
              * @param array<mixed> $context
              *
-             * @return WpUsers
+             * @return WpTerms
              */
-            public function cast(DataProperty $property, mixed $value, array $context): WpUsers
+            public function cast(DataProperty $property, mixed $value, array $context): WpTerms
             {
                 if (!is_array($value)) {
-                    return new WpUsers([]);
+                    return new WpTerms([], $this->taxonomy);
                 }
                 $ids = array_reduce($value, function ($carry, $item) {
-                    $postId = WithWpUser::getUserId($item);
+                    $postId = WpTermCast::getTermId($item);
                     if ($postId !== null) {
                         $carry[] = $postId;
                     }
                     return $carry;
                 }, []);
-                return new WpUsers($ids);
+                return new WpTerms($ids, $this->taxonomy);
             }
         };
     }

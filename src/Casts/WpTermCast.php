@@ -2,10 +2,10 @@
 
 declare(strict_types=1);
 
-namespace Kaiseki\WordPress\ACF\Dto\Cast;
+namespace Kaiseki\WordPress\ACF\Dto\Casts;
 
 use Attribute;
-use Kaiseki\WordPress\ACF\Dto\Object\WpTerm;
+use Kaiseki\WordPress\ACF\Dto\DataObjects\WpTerm;
 use Spatie\LaravelData\Attributes\GetsCast;
 use Spatie\LaravelData\Casts\Cast;
 use Spatie\LaravelData\Support\DataProperty;
@@ -15,7 +15,7 @@ use function is_array;
 use function is_numeric;
 
 #[Attribute(Attribute::TARGET_CLASS | Attribute::TARGET_PROPERTY)]
-class WithWpTerm implements GetsCast
+class WpTermCast implements GetsCast
 {
     public function __construct(
         private readonly string $taxonomy
@@ -39,7 +39,7 @@ class WithWpTerm implements GetsCast
              */
             public function cast(DataProperty $property, mixed $value, array $context): ?WpTerm
             {
-                $termId = WithWpTerm::getTermId($value);
+                $termId = WpTermCast::getTermId($value);
                 return $termId !== null ? new WpTerm($termId, $this->taxonomy) : null;
             }
         };

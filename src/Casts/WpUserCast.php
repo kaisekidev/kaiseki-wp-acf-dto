@@ -2,10 +2,10 @@
 
 declare(strict_types=1);
 
-namespace Kaiseki\WordPress\ACF\Dto\Cast;
+namespace Kaiseki\WordPress\ACF\Dto\Casts;
 
 use Attribute;
-use Kaiseki\WordPress\ACF\Dto\Object\WpUser;
+use Kaiseki\WordPress\ACF\Dto\DataObjects\WpUser;
 use Spatie\LaravelData\Attributes\GetsCast;
 use Spatie\LaravelData\Casts\Cast;
 use Spatie\LaravelData\Support\DataProperty;
@@ -15,7 +15,7 @@ use function is_array;
 use function is_numeric;
 
 #[Attribute(Attribute::TARGET_CLASS | Attribute::TARGET_PROPERTY)]
-class WithWpUser implements GetsCast
+class WpUserCast implements GetsCast
 {
     public function get(): Cast
     {
@@ -29,7 +29,7 @@ class WithWpUser implements GetsCast
              */
             public function cast(DataProperty $property, mixed $value, array $context): ?WpUser
             {
-                $userId = WithWpUser::getUserId($value);
+                $userId = WpUserCast::getUserId($value);
                 return $userId !== null ? new WpUser($userId) : null;
             }
         };

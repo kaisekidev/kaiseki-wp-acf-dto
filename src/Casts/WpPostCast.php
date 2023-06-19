@@ -2,10 +2,10 @@
 
 declare(strict_types=1);
 
-namespace Kaiseki\WordPress\ACF\Dto\Cast;
+namespace Kaiseki\WordPress\ACF\Dto\Casts;
 
 use Attribute;
-use Kaiseki\WordPress\ACF\Dto\Object\WpPost;
+use Kaiseki\WordPress\ACF\Dto\DataObjects\WpPost;
 use Spatie\LaravelData\Attributes\GetsCast;
 use Spatie\LaravelData\Casts\Cast;
 use Spatie\LaravelData\Support\DataProperty;
@@ -14,7 +14,7 @@ use function is_array;
 use function is_numeric;
 
 #[Attribute(Attribute::TARGET_CLASS | Attribute::TARGET_PROPERTY)]
-class WithWpPost implements GetsCast
+class WpPostCast implements GetsCast
 {
     public function __construct(
         /** @var string|list<string> */
@@ -40,7 +40,7 @@ class WithWpPost implements GetsCast
              */
             public function cast(DataProperty $property, mixed $value, array $context): ?WpPost
             {
-                $postId = WithWpPost::getPostId($value);
+                $postId = WpPostCast::getPostId($value);
                 return $postId !== null ? new WpPost($postId, $this->postType) : null;
             }
         };

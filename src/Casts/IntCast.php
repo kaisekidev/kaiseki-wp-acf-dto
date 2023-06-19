@@ -2,14 +2,14 @@
 
 declare(strict_types=1);
 
-namespace Kaiseki\WordPress\ACF\Dto\Cast;
+namespace Kaiseki\WordPress\ACF\Dto\Casts;
 
 use Spatie\LaravelData\Casts\Cast;
 use Spatie\LaravelData\Support\DataProperty;
 
 use function is_numeric;
 
-class NumberInt implements Cast
+class IntCast implements Cast
 {
     /**
      * @param DataProperty $property

@@ -2,7 +2,7 @@
 
 declare(strict_types=1);
 
-namespace Kaiseki\WordPress\ACF\Dto\Data;
+namespace Kaiseki\WordPress\ACF\Dto\DataObjects;
 
 use Spatie\LaravelData\Attributes\MapName;
 use Spatie\LaravelData\Attributes\MapOutputName;

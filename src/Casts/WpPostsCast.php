@@ -2,10 +2,10 @@
 
 declare(strict_types=1);
 
-namespace Kaiseki\WordPress\ACF\Dto\Cast;
+namespace Kaiseki\WordPress\ACF\Dto\Casts;
 
 use Attribute;
-use Kaiseki\WordPress\ACF\Dto\Object\WpPosts;
+use Kaiseki\WordPress\ACF\Dto\DataObjects\WpPosts;
 use Spatie\LaravelData\Attributes\GetsCast;
 use Spatie\LaravelData\Casts\Cast;
 use Spatie\LaravelData\Support\DataProperty;
@@ -14,7 +14,7 @@ use function array_reduce;
 use function is_array;
 
 #[Attribute(Attribute::TARGET_CLASS | Attribute::TARGET_PROPERTY)]
-class WithWpPosts implements GetsCast
+class WpPostsCast implements GetsCast
 {
     public function __construct(
         /** @var string|list<string> */
@@ -44,7 +44,7 @@ class WithWpPosts implements GetsCast
                     return new WpPosts([], $this->postType);
                 }
                 $ids = array_reduce($value, function ($carry, $item) {
-                    $postId = WithWpPost::getPostId($item);
+                    $postId = WpPostCast::getPostId($item);
                     if ($postId !== null) {
                         $carry[] = $postId;
                     }

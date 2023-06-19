@@ -2,7 +2,7 @@
 
 declare(strict_types=1);
 
-namespace Kaiseki\WordPress\ACF\Dto\Cast;
+namespace Kaiseki\WordPress\ACF\Dto\Casts;
 
 use Spatie\LaravelData\Casts\Cast;
 use Spatie\LaravelData\Support\DataProperty;
@@ -10,7 +10,7 @@ use Spatie\LaravelData\Support\DataProperty;
 use function array_reduce;
 use function is_array;
 
-class IDs implements Cast
+class IdsCast implements Cast
 {
     /**
      * @param DataProperty $property
@@ -35,7 +35,7 @@ class IDs implements Cast
             return [];
         }
         return array_reduce($value, function ($carry, $item) {
-            $val = ID::castValue($item);
+            $val = IdCast::castValue($item);
             if ($val !== null) {
                 $carry[] = $val;
             }

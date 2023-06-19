@@ -2,7 +2,7 @@
 
 declare(strict_types=1);
 
-namespace Kaiseki\WordPress\ACF\Dto\Cast;
+namespace Kaiseki\WordPress\ACF\Dto\Casts;
 
 use Spatie\LaravelData\Casts\Cast;
 use Spatie\LaravelData\Casts\Castable;
@@ -12,7 +12,7 @@ use function array_reduce;
 use function is_array;
 use function is_string;
 
-class Gallery implements Castable
+class GalleryCast implements Castable
 {
     public function __construct(
         /** @var array<int> */
@@ -82,12 +82,12 @@ class Gallery implements Castable
              * @param mixed        $value
              * @param array<mixed> $context
              *
-             * @return Gallery
+             * @return GalleryCast
              */
-            public function cast(DataProperty $property, mixed $value, array $context): Gallery
+            public function cast(DataProperty $property, mixed $value, array $context): GalleryCast
             {
-                $ids = IDs::castValue($value);
-                return new Gallery($ids);
+                $ids = IdsCast::castValue($value);
+                return new GalleryCast($ids);
             }
         };
     }

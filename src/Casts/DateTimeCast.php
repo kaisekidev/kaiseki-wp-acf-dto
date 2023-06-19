@@ -2,14 +2,14 @@
 
 declare(strict_types=1);
 
-namespace Kaiseki\WordPress\ACF\Dto\Cast;
+namespace Kaiseki\WordPress\ACF\Dto\Casts;
 
 use Spatie\LaravelData\Casts\Cast;
 use Spatie\LaravelData\Support\DataProperty;
 
 use function is_string;
 
-class DateTime implements Cast
+class DateTimeCast implements Cast
 {
     /**
      * @param DataProperty $property
