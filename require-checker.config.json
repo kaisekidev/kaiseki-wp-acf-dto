@@ -14,6 +14,7 @@
         "get_fields",
         "get_post",
         "get_term",
+        "get_the_ID",
         "get_user_by",
         "mixed",
         "remove_filter",
