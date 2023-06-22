@@ -17,15 +17,14 @@ class AcfGetFields
      */
     public function getFields(
         mixed $postId = false,
-        array $excludeFromFormatting = [
-            'time_picker',
-            'date_picker',
-            'date_time_picker',
-        ],
+        ?array $excludeFromFormatting = null,
     ): ?array {
         if (!function_exists('get_fields')) {
             return null;
         }
+        $excludeFromFormatting = $excludeFromFormatting === null
+            ? $this->getFieldsExcludedFromFormatting()
+            : $excludeFromFormatting;
         $filter = function (
             mixed $check,
             mixed $value,
@@ -53,20 +52,14 @@ class AcfGetFields
      */
     public function getRawFields(
         mixed $postId = false,
-        array $format = [
-            'repeater',
-            'group',
-            'clone',
-            'select',
-            'checkbox',
-            'radio',
-            'true_false',
-            'button_group',
-        ],
+        ?array $format = null,
     ): ?array {
         if (!function_exists('get_fields')) {
             return null;
         }
+        $format = $format === null
+            ? $this->getRawFieldsIncludedInFormatting()
+            : $format;
         $filter = function (
             mixed $check,
             mixed $value,
@@ -85,6 +78,35 @@ class AcfGetFields
         remove_filter('acf/pre_format_value', $filter);
         remove_filter('acf/format_value', [$this, 'normalizeEmptyFieldValues']);
         return $values;
+    }
+
+    /**
+     * @return list<string>
+     */
+    public function getFieldsExcludedFromFormatting(): array
+    {
+        return [
+            'time_picker',
+            'date_picker',
+            'date_time_picker',
+        ];
+    }
+
+    /**
+     * @return list<string>
+     */
+    public function getRawFieldsIncludedInFormatting(): array
+    {
+        return [
+            'repeater',
+            'group',
+            'clone',
+            'select',
+            'checkbox',
+            'radio',
+            'true_false',
+            'button_group',
+        ];
     }
 
     /**
