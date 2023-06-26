@@ -123,6 +123,9 @@ class AcfGetFields
 
     private function getPostId(mixed $postId): int|false
     {
+        if ($postId === false) {
+            return false;
+        }
         if (is_int($postId)) {
             return $postId;
         }
