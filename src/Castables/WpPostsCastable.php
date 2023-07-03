@@ -65,7 +65,7 @@ class WpPostsCastable implements Castable
      */
     public static function dataCastUsing(...$arguments): Cast
     {
-        if (!is_string($arguments[0])) {
+        if (!isset($arguments[0])) {
             trigger_error('Missing WithCastable attribute "postType" for WpPostsCastable', E_USER_WARNING);
         }
         $postType = $arguments[0] ?? '';

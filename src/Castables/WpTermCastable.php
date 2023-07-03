@@ -61,7 +61,7 @@ class WpTermCastable implements Castable
      */
     public static function dataCastUsing(...$arguments): Cast
     {
-        if (!is_string($arguments[0])) {
+        if (!isset($arguments[0])) {
             throw MissingAttribute::castableMissingAttribute('taxonomy');
         }
         return new WpTermCast($arguments[0]);
