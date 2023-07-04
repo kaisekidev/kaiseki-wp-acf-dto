@@ -34,7 +34,7 @@
     "illuminate/collections": "^10.7",
     "illuminate/config": "^10.7",
     "illuminate/support": "^10.7",
-    "kaiseki/config": "1.0.0",
+    "kaiseki/config": "^1.0.0",
     "kaiseki/laravel-helper-mocks": "dev-master",
     "psr/container": "^1.1",
     "respect/validation": "^2.2",
