@@ -29,8 +29,13 @@ class WpTermsCast implements Cast
      */
     public function cast(DataProperty $property, mixed $value, array $context): WpTermsCastable
     {
+        return self::castValue($value, $this->taxonomy);
+    }
+
+    public static function castValue(mixed $value, string $taxonomy): WpTermsCastable
+    {
         if (!is_array($value)) {
-            return new WpTermsCastable([], $this->taxonomy);
+            return new WpTermsCastable([], $taxonomy);
         }
 
         $ids = [];
@@ -49,6 +54,6 @@ class WpTermsCast implements Cast
             $terms[] = $item;
         }
 
-        return new WpTermsCastable($ids, $this->taxonomy, $terms);
+        return new WpTermsCastable($ids, $taxonomy, $terms);
     }
 }

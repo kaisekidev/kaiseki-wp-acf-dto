@@ -30,8 +30,16 @@ class WpPostsCast implements Cast
      */
     public function cast(DataProperty $property, mixed $value, array $context): WpPostsCastable
     {
+        return self::castValue($value, $this->postType);
+    }
+
+    /**
+     * @param string|list<string> $postType
+     */
+    public static function castValue(mixed $value, string|array $postType = ''): WpPostsCastable
+    {
         if (!is_array($value)) {
-            return new WpPostsCastable([], $this->postType);
+            return new WpPostsCastable([], $postType);
         }
 
         $ids = [];
@@ -49,6 +57,6 @@ class WpPostsCast implements Cast
             $posts[] = $item;
         }
 
-        return new WpPostsCastable($ids, $this->postType, $posts);
+        return new WpPostsCastable($ids, $postType, $posts);
     }
 }

@@ -21,6 +21,11 @@ class LinkCast implements Cast
      */
     public function cast(DataProperty $property, mixed $value, array $context): ?LinkCastable
     {
+        return self::castValue($value);
+    }
+
+    public static function castValue(mixed $value): ?LinkCastable
+    {
         if (!is_array($value)) {
             return null;
         }

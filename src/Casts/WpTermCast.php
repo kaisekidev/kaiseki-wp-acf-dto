@@ -30,10 +30,15 @@ class WpTermCast implements Cast
      */
     public function cast(DataProperty $property, mixed $value, array $context): ?WpTermCastable
     {
+        return self::castValue($value, $this->taxonomy);
+    }
+
+    public static function castValue(mixed $value, string $taxonomy): ?WpTermCastable
+    {
         $termId = self::getTermId($value);
         return $termId !== null ? new WpTermCastable(
             $termId,
-            $this->taxonomy,
+            $taxonomy,
             $value instanceof WP_Term ? $value : null,
         ) : null;
     }

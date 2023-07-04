@@ -20,6 +20,11 @@ class DateTimeCast implements Cast
      */
     public function cast(DataProperty $property, mixed $value, array $context): ?\Safe\DateTimeImmutable
     {
+        return self::castValue($value);
+    }
+
+    public static function castValue(mixed $value): ?\Safe\DateTimeImmutable
+    {
         if (!is_string($value) || $value === '') {
             return null;
         }

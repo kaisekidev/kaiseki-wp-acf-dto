@@ -21,6 +21,11 @@ class GoogleMapCast implements Cast
      */
     public function cast(DataProperty $property, mixed $value, array $context): ?GoogleMapCastable
     {
+        return self::castValue($value);
+    }
+
+    public static function castValue(mixed $value): ?GoogleMapCastable
+    {
         return is_array($value) ? GoogleMapCastable::from($value) : null;
     }
 }

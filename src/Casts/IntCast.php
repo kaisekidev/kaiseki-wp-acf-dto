@@ -20,6 +20,11 @@ class IntCast implements Cast
      */
     public function cast(DataProperty $property, mixed $value, array $context): ?int
     {
+        return self::castValue($value);
+    }
+
+    public static function castValue(mixed $value): ?int
+    {
         return is_numeric($value) ? (int)$value : null;
     }
 }

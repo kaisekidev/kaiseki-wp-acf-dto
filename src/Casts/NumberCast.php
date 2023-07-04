@@ -24,6 +24,11 @@ class NumberCast implements Cast
      */
     public function cast(DataProperty $property, mixed $value, array $context): int|float|null
     {
+        return self::castValue($value);
+    }
+
+    public static function castValue(mixed $value): int|float|null
+    {
         if (is_int($value) || is_float($value)) {
             return $value;
         }

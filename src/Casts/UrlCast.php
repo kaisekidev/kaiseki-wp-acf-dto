@@ -21,6 +21,11 @@ class UrlCast implements Cast
      */
     public function cast(DataProperty $property, mixed $value, array $context): ?string
     {
+        return self::castValue($value);
+    }
+
+    public static function castValue(mixed $value): ?string
+    {
         if (!is_string($value) || $value === '') {
             return null;
         }

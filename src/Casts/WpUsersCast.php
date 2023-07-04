@@ -23,6 +23,11 @@ class WpUsersCast implements Cast
      */
     public function cast(DataProperty $property, mixed $value, array $context): WpUsersCastable
     {
+        return self::castValue($value);
+    }
+
+    public static function castValue(mixed $value): WpUsersCastable
+    {
         if (!is_array($value)) {
             return new WpUsersCastable([]);
         }

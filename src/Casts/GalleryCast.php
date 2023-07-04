@@ -19,6 +19,11 @@ class GalleryCast implements Cast
      */
     public function cast(DataProperty $property, mixed $value, array $context): GalleryCastable
     {
+        return self::castValue($value);
+    }
+
+    public static function castValue(mixed $value): GalleryCastable
+    {
         $ids = IdsCast::castValue($value);
         return new GalleryCastable($ids);
     }

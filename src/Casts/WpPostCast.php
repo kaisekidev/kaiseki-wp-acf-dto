@@ -16,8 +16,10 @@ use function is_numeric;
 #[Attribute(Attribute::TARGET_CLASS | Attribute::TARGET_PROPERTY)]
 class WpPostCast implements Cast
 {
+    /**
+     * @param string|list<string> $postType
+     */
     public function __construct(
-        /** @var string|list<string> */
         private readonly string|array $postType = '',
     ) {
     }
@@ -31,10 +33,18 @@ class WpPostCast implements Cast
      */
     public function cast(DataProperty $property, mixed $value, array $context): ?WpPostCastable
     {
+        return self::castValue($value, $this->postType);
+    }
+
+    /**
+     * @param string|list<string> $postType
+     */
+    public static function castValue(mixed $value, string|array $postType = ''): ?WpPostCastable
+    {
         $postId = self::getPostId($value);
         return $postId !== null ? new WpPostCastable(
             $postId,
-            $this->postType,
+            $postType,
             $value instanceof WP_Post ? $value : null,
         ) : null;
     }
