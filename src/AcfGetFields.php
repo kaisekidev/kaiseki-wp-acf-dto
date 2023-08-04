@@ -42,7 +42,7 @@ class AcfGetFields
         $values = get_fields($this->getPostId($postId));
         remove_filter('acf/pre_format_value', $filter);
         remove_filter('acf/format_value', [$this, 'normalizeEmptyFieldValues']);
-        return $values;
+        return is_array($values) ? $values : [];
     }
 
     /**
