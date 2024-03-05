@@ -30,7 +30,8 @@ class SnakeAlphanumericCaseMapper implements NameMapper
     /**
      * Convert a string to snake case.
      *
-     * @param  string  $value
+     * @param string $value
+     *
      * @return string
      */
     private static function convert(string $value): string

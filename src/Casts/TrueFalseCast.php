@@ -4,11 +4,8 @@ declare(strict_types=1);
 
 namespace Kaiseki\WordPress\ACF\Dto\Casts;
 
-use Respect\Validation\Validator;
 use Spatie\LaravelData\Casts\Cast;
 use Spatie\LaravelData\Support\DataProperty;
-
-use function is_string;
 
 class TrueFalseCast implements Cast
 {

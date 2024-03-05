@@ -12,7 +12,8 @@ final class LaravelDataConfigFactory
 {
     public function __invoke(ContainerInterface $container): DataConfig
     {
-        $config = Config::get($container);
-        return new DataConfig($config->array('laravel/data'));
+        $config = Config::fromContainer($container);
+
+        return new DataConfig($config->array('laravel.data'));
     }
 }

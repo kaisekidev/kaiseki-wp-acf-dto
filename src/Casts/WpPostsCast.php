@@ -16,7 +16,7 @@ use function is_array;
 class WpPostsCast implements Cast
 {
     public function __construct(
-        /** @var string|list<string> */
+        /** @var list<string>|string */
         private readonly string|array $postType = '',
     ) {
     }
@@ -34,7 +34,8 @@ class WpPostsCast implements Cast
     }
 
     /**
-     * @param string|list<string> $postType
+     * @param mixed               $value
+     * @param list<string>|string $postType
      */
     public static function castValue(mixed $value, string|array $postType = ''): WpPostsCastable
     {

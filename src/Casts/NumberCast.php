@@ -20,7 +20,7 @@ class NumberCast implements Cast
      * @param mixed        $value
      * @param array<mixed> $context
      *
-     * @return int|float|null
+     * @return float|int|null
      */
     public function cast(DataProperty $property, mixed $value, array $context): int|float|null
     {
@@ -35,6 +35,7 @@ class NumberCast implements Cast
         if (!is_numeric($value)) {
             return null;
         }
+
         return ctype_digit($value) || (!str_contains($value, '.') && !str_contains($value, ','))
             ? (int)$value
             : (float)$value;

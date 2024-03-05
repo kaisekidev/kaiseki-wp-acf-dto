@@ -17,7 +17,7 @@ use function is_numeric;
 class WpPostCast implements Cast
 {
     /**
-     * @param string|list<string> $postType
+     * @param list<string>|string $postType
      */
     public function __construct(
         private readonly string|array $postType = '',
@@ -37,11 +37,13 @@ class WpPostCast implements Cast
     }
 
     /**
-     * @param string|list<string> $postType
+     * @param mixed               $value
+     * @param list<string>|string $postType
      */
     public static function castValue(mixed $value, string|array $postType = ''): ?WpPostCastable
     {
         $postId = self::getPostId($value);
+
         return $postId !== null ? new WpPostCastable(
             $postId,
             $postType,
@@ -57,6 +59,7 @@ class WpPostCast implements Cast
         if (is_array($value) && isset($value['ID'])) {
             return (int)$value['ID'];
         }
-        return $value instanceof \WP_Post ? $value->ID : null;
+
+        return $value instanceof WP_Post ? $value->ID : null;
     }
 }

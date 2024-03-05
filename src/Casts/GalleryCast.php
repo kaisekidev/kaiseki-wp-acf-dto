@@ -25,6 +25,7 @@ class GalleryCast implements Cast
     public static function castValue(mixed $value): GalleryCastable
     {
         $ids = IdsCast::castValue($value);
+
         return new GalleryCastable($ids);
     }
 }

@@ -4,13 +4,21 @@ declare(strict_types=1);
 
 namespace Kaiseki\WordPress\ACF\Dto;
 
+use WP_Post;
+
+use function add_filter;
 use function function_exists;
+use function get_fields;
+use function get_the_ID;
 use function in_array;
+use function is_array;
 use function is_int;
+use function remove_filter;
 
 class AcfGetFields
 {
     /**
+     * @param mixed         $postId
      * @param array<string> $excludeFromFormatting
      *
      * @return array<string, mixed>|null
@@ -35,6 +43,7 @@ class AcfGetFields
             if (in_array($type, $excludeFromFormatting, true)) {
                 return $value;
             }
+
             return null;
         };
         add_filter('acf/pre_format_value', $filter, 10, 4);
@@ -42,10 +51,12 @@ class AcfGetFields
         $values = get_fields($this->getPostId($postId));
         remove_filter('acf/pre_format_value', $filter);
         remove_filter('acf/format_value', [$this, 'normalizeEmptyFieldValues']);
+
         return is_array($values) ? $values : [];
     }
 
     /**
+     * @param mixed         $postId
      * @param array<string> $format
      *
      * @return array<string, mixed>|null
@@ -70,6 +81,7 @@ class AcfGetFields
             if (in_array($type, $format, true)) {
                 return null;
             }
+
             return $value;
         };
         add_filter('acf/pre_format_value', $filter, 10, 4);
@@ -77,6 +89,7 @@ class AcfGetFields
         $values = get_fields($this->getPostId($postId));
         remove_filter('acf/pre_format_value', $filter);
         remove_filter('acf/format_value', [$this, 'normalizeEmptyFieldValues']);
+
         return $values;
     }
 
@@ -110,6 +123,8 @@ class AcfGetFields
     }
 
     /**
+     * @param mixed                $value
+     * @param mixed                $postId
      * @param array<string, mixed> $field
      *
      * @return mixed
@@ -129,9 +144,10 @@ class AcfGetFields
         if (is_int($postId)) {
             return $postId;
         }
-        if ($postId instanceof \WP_Post) {
+        if ($postId instanceof WP_Post) {
             return $postId->ID;
         }
+
         return get_the_ID();
     }
 }

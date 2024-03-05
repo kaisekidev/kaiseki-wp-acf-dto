@@ -29,6 +29,7 @@ class EmailCast implements Cast
         if (!is_string($value) || $value === '') {
             return null;
         }
+
         return Validator::email()->validate($value) ? $value : null;
     }
 }

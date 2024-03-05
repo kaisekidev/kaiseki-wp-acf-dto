@@ -29,6 +29,7 @@ class UrlCast implements Cast
         if (!is_string($value) || $value === '') {
             return null;
         }
+
         return Validator::url()->validate($value) ? $value : null;
     }
 }

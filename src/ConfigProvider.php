@@ -4,6 +4,9 @@ declare(strict_types=1);
 
 namespace Kaiseki\WordPress\ACF\Dto;
 
+use BackedEnum;
+use DateTimeInterface;
+
 use const DATE_ATOM;
 
 final class ConfigProvider
@@ -28,11 +31,9 @@ final class ConfigProvider
                      * types.
                      */
                     'transformers' => [
-                        \DateTimeInterface::class
-                            => \Spatie\LaravelData\Transformers\DateTimeInterfaceTransformer::class,
-                        \Illuminate\Contracts\Support\Arrayable::class
-                            => \Spatie\LaravelData\Transformers\ArrayableTransformer::class,
-                        \BackedEnum::class => \Spatie\LaravelData\Transformers\EnumTransformer::class,
+                        DateTimeInterface::class => \Spatie\LaravelData\Transformers\DateTimeInterfaceTransformer::class,
+                        \Illuminate\Contracts\Support\Arrayable::class => \Spatie\LaravelData\Transformers\ArrayableTransformer::class,
+                        BackedEnum::class => \Spatie\LaravelData\Transformers\EnumTransformer::class,
                     ],
 
                     /*
@@ -40,8 +41,8 @@ final class ConfigProvider
                      * object from simple types.
                      */
                     'casts' => [
-//                        DateTimeInterface::class => \Spatie\LaravelData\Casts\DateTimeInterfaceCast::class,
-//                        BackedEnum::class => \Spatie\LaravelData\Casts\EnumCast::class,
+                        //                        DateTimeInterface::class => \Spatie\LaravelData\Casts\DateTimeInterfaceCast::class,
+                        //                        BackedEnum::class => \Spatie\LaravelData\Casts\EnumCast::class,
                     ],
 
                     /*
@@ -89,8 +90,8 @@ final class ConfigProvider
             ],
             'dependencies' => [
                 'aliases' => [
-//                    \DateTimeInterface::class => \Spatie\LaravelData\Casts\DateTimeInterfaceCast::class,
-//                    \BackedEnum::class => \Spatie\LaravelData\Casts\EnumCast::class,
+                    //                    \DateTimeInterface::class => \Spatie\LaravelData\Casts\DateTimeInterfaceCast::class,
+                    //                    \BackedEnum::class => \Spatie\LaravelData\Casts\EnumCast::class,
                 ],
                 'factories' => [
                     \Spatie\LaravelData\Support\DataConfig::class => LaravelDataConfigFactory::class,

@@ -36,6 +36,7 @@ class IdCast implements Cast
         if (is_numeric($value) && $value !== '0') {
             return (int)$value;
         }
+
         return null;
     }
 }

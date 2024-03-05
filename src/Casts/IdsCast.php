@@ -34,11 +34,13 @@ class IdsCast implements Cast
         if (!is_array($value)) {
             return [];
         }
+
         return array_reduce($value, function ($carry, $item) {
             $val = IdCast::castValue($item);
             if ($val !== null) {
                 $carry[] = $val;
             }
+
             return $carry;
         }, []);
     }

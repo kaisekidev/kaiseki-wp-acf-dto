@@ -41,7 +41,6 @@ class WpTermsCast implements Cast
         $ids = [];
         $terms = [];
 
-
         foreach ($value as $item) {
             $termId = WpTermCast::getTermId($item);
             if ($termId !== null) {

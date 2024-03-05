@@ -31,6 +31,7 @@ class WpUserCast implements Cast
     public static function castValue(mixed $value): ?WpUserCastable
     {
         $userId = self::getUserId($value);
+
         return $userId !== null ? new WpUserCastable(
             $userId,
             $value instanceof WP_User ? $value : null,
@@ -45,6 +46,7 @@ class WpUserCast implements Cast
         if (is_array($value) && isset($value['ID'])) {
             return (int)$value['ID'];
         }
+
         return $value instanceof WP_User ? $value->ID : null;
     }
 }

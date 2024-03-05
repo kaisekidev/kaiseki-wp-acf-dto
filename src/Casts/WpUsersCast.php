@@ -8,6 +8,7 @@ use Attribute;
 use Kaiseki\WordPress\ACF\Dto\Castables\WpUsersCastable;
 use Spatie\LaravelData\Casts\Cast;
 use Spatie\LaravelData\Support\DataProperty;
+use WP_User;
 
 use function is_array;
 
@@ -40,7 +41,7 @@ class WpUsersCast implements Cast
             if ($userId !== null) {
                 $ids[] = $userId;
             }
-            if (!($item instanceof \WP_User)) {
+            if (!($item instanceof WP_User)) {
                 continue;
             }
 

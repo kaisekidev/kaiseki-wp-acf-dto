@@ -29,6 +29,7 @@ class LinkCast implements Cast
         if (!is_array($value)) {
             return null;
         }
+
         return LinkCastable::from($value);
     }
 }

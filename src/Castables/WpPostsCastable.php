@@ -10,6 +10,7 @@ use Spatie\LaravelData\Casts\Cast;
 use Spatie\LaravelData\Casts\Castable;
 use WP_Post;
 
+use function acf_get_posts;
 use function count;
 use function function_exists;
 use function is_array;
@@ -23,7 +24,7 @@ class WpPostsCastable implements Castable
     public function __construct(
         /** @var list<int> */
         private readonly array $ids,
-        /** @var string|list<string> */
+        /** @var list<string>|string */
         private readonly string|array $postTypes = '',
         /** @var list<WP_Post> */
         private array $posts = [],
@@ -52,8 +53,8 @@ class WpPostsCastable implements Castable
         }
 
         return $this->posts = acf_get_posts([
-            'post__in'      => $this->ids,
-            'post_type'     => $this->postTypes,
+            'post__in' => $this->ids,
+            'post_type' => $this->postTypes,
             'no_found_rows' => true,
         ]);
     }
@@ -72,6 +73,7 @@ class WpPostsCastable implements Castable
         if (!is_string($postType) && !is_array($postType)) {
             throw InvalidAttributeType::create('postType', 'string|array');
         }
+
         return new WpPostsCast($postType);
     }
 }

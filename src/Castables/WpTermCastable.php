@@ -10,6 +10,7 @@ use Spatie\LaravelData\Casts\Cast;
 use Spatie\LaravelData\Casts\Castable;
 use WP_Term;
 
+use function acf_get_terms;
 use function count;
 use function current;
 use function function_exists;
@@ -29,7 +30,7 @@ class WpTermCastable implements Castable
         return $this->id;
     }
 
-    public function getTerm(): ?\WP_Term
+    public function getTerm(): ?WP_Term
     {
         if ($this->term !== null) {
             return $this->term;
@@ -41,8 +42,8 @@ class WpTermCastable implements Castable
 
         $terms = acf_get_terms(
             [
-                'taxonomy'   => $this->taxonomy,
-                'include'    => [$this->id],
+                'taxonomy' => $this->taxonomy,
+                'include' => [$this->id],
                 'hide_empty' => false,
             ]
         );
@@ -64,6 +65,7 @@ class WpTermCastable implements Castable
         if (!isset($arguments[0]) || !is_string($arguments[0])) {
             throw MissingAttribute::castableMissingAttribute('taxonomy');
         }
+
         return new WpTermCast($arguments[0]);
     }
 }

@@ -7,10 +7,14 @@ namespace Kaiseki\WordPress\ACF\Dto\Castables;
 use Kaiseki\WordPress\ACF\Dto\Casts\GalleryCast;
 use Spatie\LaravelData\Casts\Cast;
 use Spatie\LaravelData\Casts\Castable;
+use WP_Post;
 
+use function acf_get_attachment;
+use function acf_get_posts;
 use function array_reduce;
 use function is_array;
 use function is_string;
+use function wp_get_attachment_url;
 
 class GalleryCastable implements Castable
 {
@@ -21,13 +25,13 @@ class GalleryCastable implements Castable
     }
 
     /**
-     * @return list<\WP_Post>
+     * @return list<WP_Post>
      */
     public function getPosts(): array
     {
         return acf_get_posts([
-            'post_type'              => 'attachment',
-            'post__in'               => $this->ids,
+            'post_type' => 'attachment',
+            'post__in' => $this->ids,
             'update_post_meta_cache' => true,
             'update_post_term_cache' => false,
         ]);
@@ -51,6 +55,7 @@ class GalleryCastable implements Castable
             if (is_array($attachment)) {
                 $carry[] = $attachment;
             }
+
             return $carry;
         }, []);
     }
@@ -65,6 +70,7 @@ class GalleryCastable implements Castable
             if (is_string($url) && $url !== '') {
                 $carry[] = $url;
             }
+
             return $carry;
         }, []);
     }

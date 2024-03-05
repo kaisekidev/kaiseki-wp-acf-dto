@@ -36,6 +36,7 @@ class WpTermCast implements Cast
     public static function castValue(mixed $value, string $taxonomy): ?WpTermCastable
     {
         $termId = self::getTermId($value);
+
         return $termId !== null ? new WpTermCastable(
             $termId,
             $taxonomy,
@@ -51,6 +52,7 @@ class WpTermCast implements Cast
         if (is_array($value) && isset($value['ID'])) {
             return (int)$value['ID'];
         }
+
         // phpcs:disable Squiz.NamingConventions.ValidVariableName.MemberNotCamelCaps
         return $value instanceof WP_Term ? $value->term_id : null;
     }

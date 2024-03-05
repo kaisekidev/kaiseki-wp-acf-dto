@@ -9,9 +9,11 @@ use Spatie\LaravelData\Casts\Cast;
 use Spatie\LaravelData\Casts\Castable;
 use WP_User;
 
+use function acf_get_users;
 use function array_map;
 use function count;
 use function function_exists;
+use function get_avatar;
 
 class WpUsersCastable implements Castable
 {
@@ -67,26 +69,26 @@ class WpUsersCastable implements Castable
     public function getUserArrays(): array
     {
         return array_map(fn(WP_User $user) => [
-            'ID'               => $user->ID,
+            'ID' => $user->ID,
             // phpcs:disable Squiz.NamingConventions.ValidVariableName.MemberNotCamelCaps
-            'user_firstname'   => $user->user_firstname,
+            'user_firstname' => $user->user_firstname,
             // phpcs:disable Squiz.NamingConventions.ValidVariableName.MemberNotCamelCaps
-            'user_lastname'    => $user->user_lastname,
+            'user_lastname' => $user->user_lastname,
             // phpcs:disable Squiz.NamingConventions.ValidVariableName.MemberNotCamelCaps
-            'nickname'         => $user->nickname,
+            'nickname' => $user->nickname,
             // phpcs:disable Squiz.NamingConventions.ValidVariableName.MemberNotCamelCaps
-            'user_nicename'    => $user->user_nicename,
+            'user_nicename' => $user->user_nicename,
             // phpcs:disable Squiz.NamingConventions.ValidVariableName.MemberNotCamelCaps
-            'display_name'     => $user->display_name,
+            'display_name' => $user->display_name,
             // phpcs:disable Squiz.NamingConventions.ValidVariableName.MemberNotCamelCaps
-            'user_email'       => $user->user_email,
+            'user_email' => $user->user_email,
             // phpcs:disable Squiz.NamingConventions.ValidVariableName.MemberNotCamelCaps
-            'user_url'         => $user->user_url,
+            'user_url' => $user->user_url,
             // phpcs:disable Squiz.NamingConventions.ValidVariableName.MemberNotCamelCaps
-            'user_registered'  => $user->user_registered,
+            'user_registered' => $user->user_registered,
             // phpcs:disable Squiz.NamingConventions.ValidVariableName.MemberNotCamelCaps
             'user_description' => $user->user_description,
-            'user_avatar'      => get_avatar($user->ID),
+            'user_avatar' => get_avatar($user->ID),
         ], $this->getUsers());
     }
 
