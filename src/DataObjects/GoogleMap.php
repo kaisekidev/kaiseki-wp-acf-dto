@@ -14,19 +14,21 @@ use Spatie\LaravelData\Mappers\SnakeCaseMapper;
 class GoogleMap extends Data
 {
     public function __construct(
-        public readonly ?string $address,
-        public readonly ?float $lat,
-        public readonly ?float $lng,
-        public readonly ?int $zoom,
-        public readonly ?string $placeId,
-        public readonly ?string $name,
-        public readonly ?string $streetNumber,
-        public readonly ?string $streetName,
-        public readonly ?string $city,
-        public readonly ?string $state,
-        public readonly ?string $postCode,
-        public readonly ?string $country,
-        public readonly ?string $countryShort,
+        public readonly string $address,
+        public readonly float $lat,
+        public readonly float $lng,
+        public readonly int $zoom,
+        public readonly ?string $placeId = null,
+        public readonly ?string $name = null,
+        public readonly string|int|null $streetNumber = null,
+        public readonly ?string $streetName = null,
+        public readonly ?string $streetNameShort = null,
+        public readonly ?string $city = null,
+        public readonly ?string $state = null,
+        public readonly ?string $stateShort = null,
+        public readonly string|int|null $postCode = null,
+        public readonly ?string $country = null,
+        public readonly ?string $countryShort = null
     ) {
     }
 }
