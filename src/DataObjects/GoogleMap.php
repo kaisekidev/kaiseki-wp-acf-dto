@@ -17,7 +17,7 @@ class GoogleMap extends Data
         public readonly string $address,
         public readonly float $lat,
         public readonly float $lng,
-        public readonly int $zoom,
+        public readonly ?int $zoom = null,
         public readonly ?string $placeId = null,
         public readonly ?string $name = null,
         public readonly string|int|null $streetNumber = null,
