@@ -7,6 +7,7 @@ namespace Kaiseki\WordPress\ACF\Dto\Casts;
 use Attribute;
 use Kaiseki\WordPress\ACF\Dto\Castables\WpUsersCastable;
 use Spatie\LaravelData\Casts\Cast;
+use Spatie\LaravelData\Support\Creation\CreationContext;
 use Spatie\LaravelData\Support\DataProperty;
 use WP_User;
 
@@ -16,13 +17,14 @@ use function is_array;
 class WpUsersCast implements Cast
 {
     /**
-     * @param DataProperty $property
-     * @param mixed        $value
-     * @param array<mixed> $context
+     * @param DataProperty    $property
+     * @param mixed           $value
+     * @param array<mixed>    $properties
+     * @param CreationContext $context
      *
      * @return WpUsersCastable
      */
-    public function cast(DataProperty $property, mixed $value, array $context): WpUsersCastable
+    public function cast(DataProperty $property, mixed $value, array $properties, CreationContext $context): WpUsersCastable
     {
         return self::castValue($value);
     }

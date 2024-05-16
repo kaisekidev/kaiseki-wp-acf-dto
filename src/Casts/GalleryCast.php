@@ -6,18 +6,20 @@ namespace Kaiseki\WordPress\ACF\Dto\Casts;
 
 use Kaiseki\WordPress\ACF\Dto\Castables\GalleryCastable;
 use Spatie\LaravelData\Casts\Cast;
+use Spatie\LaravelData\Support\Creation\CreationContext;
 use Spatie\LaravelData\Support\DataProperty;
 
 class GalleryCast implements Cast
 {
     /**
-     * @param DataProperty $property
-     * @param mixed        $value
-     * @param array<mixed> $context
+     * @param DataProperty    $property
+     * @param mixed           $value
+     * @param array<mixed>    $properties
+     * @param CreationContext $context
      *
      * @return GalleryCastable
      */
-    public function cast(DataProperty $property, mixed $value, array $context): GalleryCastable
+    public function cast(DataProperty $property, mixed $value, array $properties, CreationContext $context): GalleryCastable
     {
         return self::castValue($value);
     }

@@ -6,6 +6,7 @@ namespace Kaiseki\WordPress\ACF\Dto\Casts;
 
 use Respect\Validation\Validator;
 use Spatie\LaravelData\Casts\Cast;
+use Spatie\LaravelData\Support\Creation\CreationContext;
 use Spatie\LaravelData\Support\DataProperty;
 
 use function is_string;
@@ -13,13 +14,14 @@ use function is_string;
 class EmailCast implements Cast
 {
     /**
-     * @param DataProperty $property
-     * @param mixed        $value
-     * @param array<mixed> $context
+     * @param DataProperty    $property
+     * @param mixed           $value
+     * @param array<mixed>    $properties
+     * @param CreationContext $context
      *
      * @return string|null
      */
-    public function cast(DataProperty $property, mixed $value, array $context): ?string
+    public function cast(DataProperty $property, mixed $value, array $properties, CreationContext $context): ?string
     {
         return self::castValue($value);
     }

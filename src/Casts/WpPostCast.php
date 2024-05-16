@@ -7,6 +7,7 @@ namespace Kaiseki\WordPress\ACF\Dto\Casts;
 use Attribute;
 use Kaiseki\WordPress\ACF\Dto\Castables\WpPostCastable;
 use Spatie\LaravelData\Casts\Cast;
+use Spatie\LaravelData\Support\Creation\CreationContext;
 use Spatie\LaravelData\Support\DataProperty;
 use WP_Post;
 
@@ -25,13 +26,14 @@ class WpPostCast implements Cast
     }
 
     /**
-     * @param DataProperty $property
-     * @param mixed        $value
-     * @param array<mixed> $context
+     * @param DataProperty    $property
+     * @param mixed           $value
+     * @param array<mixed>    $properties
+     * @param CreationContext $context
      *
      * @return WpPostCastable|null
      */
-    public function cast(DataProperty $property, mixed $value, array $context): ?WpPostCastable
+    public function cast(DataProperty $property, mixed $value, array $properties, CreationContext $context): ?WpPostCastable
     {
         return self::castValue($value, $this->postType);
     }
