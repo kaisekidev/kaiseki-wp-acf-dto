@@ -5,11 +5,11 @@ declare(strict_types=1);
 namespace Kaiseki\WordPress\ACF\Dto\Castables;
 
 use Kaiseki\WordPress\ACF\Dto\Casts\LinkCast;
+use Kaiseki\WordPress\ACF\Dto\Data;
 use Spatie\LaravelData\Casts\Cast;
 use Spatie\LaravelData\Casts\Castable;
-use Spatie\LaravelData\Data;
 
-class LinkCastable extends Data implements Castable
+class Link extends Data implements Castable
 {
     public function __construct(
         public readonly ?string $title = null,

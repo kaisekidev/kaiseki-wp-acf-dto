@@ -20,7 +20,7 @@ use function trigger_error;
 
 use const E_USER_WARNING;
 
-class WpPostCastable implements Castable
+class WpPost implements Castable
 {
     public function __construct(
         private readonly ?int $id = null,

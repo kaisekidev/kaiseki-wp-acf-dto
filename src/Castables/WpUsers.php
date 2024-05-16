@@ -15,7 +15,7 @@ use function count;
 use function function_exists;
 use function get_avatar;
 
-class WpUsersCastable implements Castable
+class WpUsers implements Castable
 {
     public function __construct(
         /** @var array<int> */

@@ -5,7 +5,7 @@ declare(strict_types=1);
 namespace Kaiseki\WordPress\ACF\Dto\Casts;
 
 use Attribute;
-use Kaiseki\WordPress\ACF\Dto\Castables\WpUsersCastable;
+use Kaiseki\WordPress\ACF\Dto\Castables\WpUsers;
 use Spatie\LaravelData\Casts\Cast;
 use Spatie\LaravelData\Support\Creation\CreationContext;
 use Spatie\LaravelData\Support\DataProperty;
@@ -22,17 +22,17 @@ class WpUsersCast implements Cast
      * @param array<mixed>    $properties
      * @param CreationContext $context
      *
-     * @return WpUsersCastable
+     * @return WpUsers
      */
-    public function cast(DataProperty $property, mixed $value, array $properties, CreationContext $context): WpUsersCastable
+    public function cast(DataProperty $property, mixed $value, array $properties, CreationContext $context): WpUsers
     {
         return self::castValue($value);
     }
 
-    public static function castValue(mixed $value): WpUsersCastable
+    public static function castValue(mixed $value): WpUsers
     {
         if (!is_array($value)) {
-            return new WpUsersCastable([]);
+            return new WpUsers([]);
         }
 
         $ids = [];
@@ -50,6 +50,6 @@ class WpUsersCast implements Cast
             $users[] = $item;
         }
 
-        return new WpUsersCastable($ids, $users);
+        return new WpUsers($ids, $users);
     }
 }

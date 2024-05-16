@@ -15,7 +15,7 @@ use function current;
 use function function_exists;
 use function get_avatar;
 
-class WpUserCastable implements Castable
+class WpUser implements Castable
 {
     public function __construct(
         private readonly int $id,

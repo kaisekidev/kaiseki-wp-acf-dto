@@ -19,7 +19,7 @@ use function trigger_error;
 
 use const E_USER_WARNING;
 
-class WpPostsCastable implements Castable
+class WpPosts implements Castable
 {
     public function __construct(
         /** @var list<int> */

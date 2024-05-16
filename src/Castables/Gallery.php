@@ -16,11 +16,14 @@ use function is_array;
 use function is_string;
 use function wp_get_attachment_url;
 
-class GalleryCastable implements Castable
+class Gallery implements Castable
 {
     public function __construct(
         /** @var array<int> */
         private readonly array $ids = [],
+        private ?array $attachments = null,
+        private ?array $posts = null,
+        private ?array $urls = null,
     ) {
     }
 
@@ -29,7 +32,7 @@ class GalleryCastable implements Castable
      */
     public function getPosts(): array
     {
-        return acf_get_posts([
+        return $this->posts ??= acf_get_posts([
             'post_type' => 'attachment',
             'post__in' => $this->ids,
             'update_post_meta_cache' => true,
@@ -50,7 +53,7 @@ class GalleryCastable implements Castable
      */
     public function getAttachmentArrays(): array
     {
-        return array_reduce($this->ids, function (array $carry, int $postId) {
+        return $this->attachments ??= array_reduce($this->ids, function (array $carry, int $postId) {
             $attachment = acf_get_attachment($postId);
             if (is_array($attachment)) {
                 $carry[] = $attachment;
@@ -65,7 +68,7 @@ class GalleryCastable implements Castable
      */
     public function getUrls(): array
     {
-        return array_reduce($this->ids, function (array $carry, int $postId) {
+        return $this->urls ??= array_reduce($this->ids, function (array $carry, int $postId) {
             $url = wp_get_attachment_url($postId);
             if (is_string($url) && $url !== '') {
                 $carry[] = $url;

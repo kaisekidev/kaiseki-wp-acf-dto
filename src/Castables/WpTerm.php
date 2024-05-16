@@ -16,7 +16,7 @@ use function current;
 use function function_exists;
 use function is_string;
 
-class WpTermCastable implements Castable
+class WpTerm implements Castable
 {
     public function __construct(
         private readonly int $id,

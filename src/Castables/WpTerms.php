@@ -17,7 +17,7 @@ use function function_exists;
 use function is_string;
 
 #[Attribute(Attribute::TARGET_CLASS | Attribute::TARGET_PROPERTY)]
-class WpTermsCastable implements Castable
+class WpTerms implements Castable
 {
     public function __construct(
         /** @var array<int> */
