@@ -8,6 +8,8 @@ use Illuminate\Support\Str;
 use Spatie\LaravelData\Mappers\NameMapper;
 
 use function is_string;
+use function preg_match;
+use function preg_replace;
 
 class SnakeAlphanumericCaseMapper implements NameMapper
 {
@@ -42,8 +44,8 @@ class SnakeAlphanumericCaseMapper implements NameMapper
             return static::$cache[$key];
         }
 
-        if ((bool)\Safe\preg_match('~[0-9]+~', $value)) {
-            $value = \Safe\preg_replace('/(?<=[a-zA-Z])(\d)/u', '_$1', $value);
+        if ((bool)preg_match('~[0-9]+~', $value)) {
+            $value = (string)preg_replace('/(?<=[a-zA-Z])(\d)/u', '_$1', $value);
         }
 
         return static::$cache[$key] = $value;
