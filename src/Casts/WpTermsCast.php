@@ -5,7 +5,7 @@ declare(strict_types=1);
 namespace Kaiseki\WordPress\ACF\Dto\Casts;
 
 use Attribute;
-use Kaiseki\WordPress\ACF\Dto\Castables\WpTermsCastable;
+use Kaiseki\WordPress\ACF\Dto\Castables\WpTerms;
 use Spatie\LaravelData\Casts\Cast;
 use Spatie\LaravelData\Support\Creation\CreationContext;
 use Spatie\LaravelData\Support\DataProperty;
@@ -27,17 +27,17 @@ class WpTermsCast implements Cast
      * @param array<mixed>    $properties
      * @param CreationContext $context
      *
-     * @return WpTermsCastable
+     * @return WpTerms
      */
-    public function cast(DataProperty $property, mixed $value, array $properties, CreationContext $context): WpTermsCastable
+    public function cast(DataProperty $property, mixed $value, array $properties, CreationContext $context): WpTerms
     {
         return self::castValue($value, $this->taxonomy);
     }
 
-    public static function castValue(mixed $value, string $taxonomy): WpTermsCastable
+    public static function castValue(mixed $value, string $taxonomy): WpTerms
     {
         if (!is_array($value)) {
-            return new WpTermsCastable([], $taxonomy);
+            return new WpTerms([], $taxonomy);
         }
 
         $ids = [];
@@ -55,6 +55,6 @@ class WpTermsCast implements Cast
             $terms[] = $item;
         }
 
-        return new WpTermsCastable($ids, $taxonomy, $terms);
+        return new WpTerms($ids, $taxonomy, $terms);
     }
 }

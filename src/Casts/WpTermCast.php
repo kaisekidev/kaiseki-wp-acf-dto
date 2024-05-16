@@ -5,7 +5,7 @@ declare(strict_types=1);
 namespace Kaiseki\WordPress\ACF\Dto\Casts;
 
 use Attribute;
-use Kaiseki\WordPress\ACF\Dto\Castables\WpTermCastable;
+use Kaiseki\WordPress\ACF\Dto\Castables\WpTerm;
 use Spatie\LaravelData\Casts\Cast;
 use Spatie\LaravelData\Support\Creation\CreationContext;
 use Spatie\LaravelData\Support\DataProperty;
@@ -28,18 +28,18 @@ class WpTermCast implements Cast
      * @param array<mixed>    $properties
      * @param CreationContext $context
      *
-     * @return WpTermCastable|null
+     * @return WpTerm|null
      */
-    public function cast(DataProperty $property, mixed $value, array $properties, CreationContext $context): ?WpTermCastable
+    public function cast(DataProperty $property, mixed $value, array $properties, CreationContext $context): ?WpTerm
     {
         return self::castValue($value, $this->taxonomy);
     }
 
-    public static function castValue(mixed $value, string $taxonomy): ?WpTermCastable
+    public static function castValue(mixed $value, string $taxonomy): ?WpTerm
     {
         $termId = self::getTermId($value);
 
-        return $termId !== null ? new WpTermCastable(
+        return $termId !== null ? new WpTerm(
             $termId,
             $taxonomy,
             $value instanceof WP_Term ? $value : null,

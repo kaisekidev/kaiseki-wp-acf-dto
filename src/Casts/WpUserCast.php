@@ -5,7 +5,7 @@ declare(strict_types=1);
 namespace Kaiseki\WordPress\ACF\Dto\Casts;
 
 use Attribute;
-use Kaiseki\WordPress\ACF\Dto\Castables\WpUserCastable;
+use Kaiseki\WordPress\ACF\Dto\Castables\WpUser;
 use Spatie\LaravelData\Casts\Cast;
 use Spatie\LaravelData\Support\Creation\CreationContext;
 use Spatie\LaravelData\Support\DataProperty;
@@ -23,18 +23,18 @@ class WpUserCast implements Cast
      * @param array<mixed>    $properties
      * @param CreationContext $context
      *
-     * @return WpUserCastable|null
+     * @return WpUser|null
      */
-    public function cast(DataProperty $property, mixed $value, array $properties, CreationContext $context): ?WpUserCastable
+    public function cast(DataProperty $property, mixed $value, array $properties, CreationContext $context): ?WpUser
     {
         return self::castValue($value);
     }
 
-    public static function castValue(mixed $value): ?WpUserCastable
+    public static function castValue(mixed $value): ?WpUser
     {
         $userId = self::getUserId($value);
 
-        return $userId !== null ? new WpUserCastable(
+        return $userId !== null ? new WpUser(
             $userId,
             $value instanceof WP_User ? $value : null,
         ) : null;

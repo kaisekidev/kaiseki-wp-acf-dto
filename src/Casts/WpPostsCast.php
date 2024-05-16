@@ -5,7 +5,7 @@ declare(strict_types=1);
 namespace Kaiseki\WordPress\ACF\Dto\Casts;
 
 use Attribute;
-use Kaiseki\WordPress\ACF\Dto\Castables\WpPostsCastable;
+use Kaiseki\WordPress\ACF\Dto\Castables\WpPosts;
 use Spatie\LaravelData\Casts\Cast;
 use Spatie\LaravelData\Support\Creation\CreationContext;
 use Spatie\LaravelData\Support\DataProperty;
@@ -28,9 +28,9 @@ class WpPostsCast implements Cast
      * @param array<mixed>    $properties
      * @param CreationContext $context
      *
-     * @return WpPostsCastable
+     * @return WpPosts
      */
-    public function cast(DataProperty $property, mixed $value, array $properties, CreationContext $context): WpPostsCastable
+    public function cast(DataProperty $property, mixed $value, array $properties, CreationContext $context): WpPosts
     {
         return self::castValue($value, $this->postType);
     }
@@ -39,10 +39,10 @@ class WpPostsCast implements Cast
      * @param mixed               $value
      * @param list<string>|string $postType
      */
-    public static function castValue(mixed $value, string|array $postType = ''): WpPostsCastable
+    public static function castValue(mixed $value, string|array $postType = ''): WpPosts
     {
         if (!is_array($value)) {
-            return new WpPostsCastable([], $postType);
+            return new WpPosts([], $postType);
         }
 
         $ids = [];
@@ -60,6 +60,6 @@ class WpPostsCast implements Cast
             $posts[] = $item;
         }
 
-        return new WpPostsCastable($ids, $postType, $posts);
+        return new WpPosts($ids, $postType, $posts);
     }
 }
