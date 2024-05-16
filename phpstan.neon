@@ -6,3 +6,7 @@ parameters:
         - tests/
     scanFiles:
         - vendor/php-stubs/acf-pro-stubs/acf-pro-stubs.php
+    ignoreErrors:
+        - identifier: missingType.generics
+
+

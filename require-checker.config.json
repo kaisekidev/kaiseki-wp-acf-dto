@@ -19,6 +19,7 @@
         "mixed",
         "remove_filter",
         "wp_get_attachment_url",
+        "wp_trigger_error",
         "WP_Post",
         "WP_Term",
         "wp_timezone",
