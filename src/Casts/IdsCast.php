@@ -37,7 +37,7 @@ class IdsCast implements Cast
             return [];
         }
 
-        return array_reduce($value, function ($carry, $item) {
+        return array_reduce($value, function (array $carry, mixed $item) {
             $val = IdCast::castValue($item);
             if ($val !== null) {
                 $carry[] = $val;
