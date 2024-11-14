@@ -22,6 +22,16 @@ class ArrayTypeCast implements Cast
      */
     public function cast(DataProperty $property, mixed $value, array $properties, CreationContext $context): ?array
     {
+        return self::castValue($value);
+    }
+
+    /**
+     * @param mixed $value
+     *
+     * @return array<mixed>|null
+     */
+    public static function castValue(mixed $value): ?array
+    {
         return is_array($value) ? $value : null;
     }
 }
