@@ -19,6 +19,7 @@ trait WithSafeFrom
             return static::factory()->from(...$payloads);
         } catch (Throwable $error) {
             wp_trigger_error(
+                // @phpstan-ignore-next-line
                 get_called_class() . '::from()',
                 $error->getMessage(),
                 E_USER_WARNING
