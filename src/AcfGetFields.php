@@ -48,7 +48,8 @@ class AcfGetFields
         };
         add_filter('acf/pre_format_value', $filter, 10, 4);
         add_filter('acf/format_value', [$this, 'normalizeEmptyFieldValues'], 10, 3);
-        $values = get_fields($this->getPostId($postId));
+        // @phpstan-ignore-next-line
+        $values = get_fields(empty($postId) ? get_the_ID() : $postId);
         remove_filter('acf/pre_format_value', $filter);
         remove_filter('acf/format_value', [$this, 'normalizeEmptyFieldValues']);
 
@@ -86,7 +87,8 @@ class AcfGetFields
         };
         add_filter('acf/pre_format_value', $filter, 10, 4);
         add_filter('acf/format_value', [$this, 'normalizeEmptyFieldValues'], 10, 3);
-        $values = get_fields($this->getPostId($postId));
+        // @phpstan-ignore-next-line
+        $values = get_fields(empty($postId) ? get_the_ID() : $postId);
         remove_filter('acf/pre_format_value', $filter);
         remove_filter('acf/format_value', [$this, 'normalizeEmptyFieldValues']);
 
@@ -134,20 +136,5 @@ class AcfGetFields
         return isset($field['type']) && $field['type'] !== 'true_false' && $value === false
             ? null
             : $value;
-    }
-
-    private function getPostId(mixed $postId): int|false
-    {
-        if ($postId === false) {
-            return false;
-        }
-        if (is_int($postId)) {
-            return $postId;
-        }
-        if ($postId instanceof WP_Post) {
-            return $postId->ID;
-        }
-
-        return get_the_ID();
     }
 }
