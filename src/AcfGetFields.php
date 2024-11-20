@@ -4,15 +4,11 @@ declare(strict_types=1);
 
 namespace Kaiseki\WordPress\ACF\Dto;
 
-use WP_Post;
-
 use function add_filter;
 use function function_exists;
 use function get_fields;
-use function get_the_ID;
 use function in_array;
 use function is_array;
-use function is_int;
 use function remove_filter;
 
 class AcfGetFields
@@ -48,8 +44,7 @@ class AcfGetFields
         };
         add_filter('acf/pre_format_value', $filter, 10, 4);
         add_filter('acf/format_value', [$this, 'normalizeEmptyFieldValues'], 10, 3);
-        // @phpstan-ignore-next-line
-        $values = get_fields(empty($postId) ? get_the_ID() : $postId);
+        $values = get_fields($postId);
         remove_filter('acf/pre_format_value', $filter);
         remove_filter('acf/format_value', [$this, 'normalizeEmptyFieldValues']);
 
@@ -87,8 +82,7 @@ class AcfGetFields
         };
         add_filter('acf/pre_format_value', $filter, 10, 4);
         add_filter('acf/format_value', [$this, 'normalizeEmptyFieldValues'], 10, 3);
-        // @phpstan-ignore-next-line
-        $values = get_fields(empty($postId) ? get_the_ID() : $postId);
+        $values = get_fields($postId);
         remove_filter('acf/pre_format_value', $filter);
         remove_filter('acf/format_value', [$this, 'normalizeEmptyFieldValues']);
 
