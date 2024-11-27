@@ -31,12 +31,8 @@
   "require": {
     "php": "^8.1",
     "ext-ctype": "*",
-    "illuminate/collections": "^10.7",
-    "illuminate/config": "^10.7",
-    "illuminate/pagination": "^10.48",
-    "illuminate/support": "^10.7",
+    "jawira/case-converter": "^3.5",
     "kaiseki/config": "dev-master",
-    "kaiseki/laravel-helper-mocks": "dev-master",
     "psr/container": "^1.1 || ^2.0",
     "respect/validation": "^2.2",
     "spatie/laravel-data": "^4.0"

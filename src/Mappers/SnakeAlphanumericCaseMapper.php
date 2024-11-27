@@ -5,6 +5,7 @@ declare(strict_types=1);
 namespace Kaiseki\WordPress\ACF\Dto\Mappers;
 
 use Illuminate\Support\Str;
+use Jawira\CaseConverter\Convert;
 use Spatie\LaravelData\Mappers\NameMapper;
 
 use function is_string;
@@ -26,7 +27,7 @@ class SnakeAlphanumericCaseMapper implements NameMapper
             return $name;
         }
 
-        return self::convert(Str::snake($name));
+        return self::convert((new Convert($name))->toSnake());
     }
 
     /**
