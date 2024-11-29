@@ -33,6 +33,7 @@
     "ext-ctype": "*",
     "jawira/case-converter": "^3.5",
     "kaiseki/config": "dev-master",
+    "kaiseki/laravel-helper-mocks": "dev-master",
     "psr/container": "^1.1 || ^2.0",
     "respect/validation": "^2.2",
     "spatie/laravel-data": "^4.0"
