@@ -6,11 +6,13 @@ namespace Kaiseki\WordPress\ACF\Dto\Casts;
 
 use Attribute;
 use Kaiseki\WordPress\ACF\Dto\Castables\WpPosts;
+use Kaiseki\WordPress\ACF\Dto\Util\GetPosts;
 use Spatie\LaravelData\Casts\Cast;
 use Spatie\LaravelData\Support\Creation\CreationContext;
 use Spatie\LaravelData\Support\DataProperty;
 use WP_Post;
 
+use function count;
 use function is_array;
 
 #[Attribute(Attribute::TARGET_CLASS | Attribute::TARGET_PROPERTY)]
@@ -21,6 +23,7 @@ class WpPostsCast implements Cast
         private readonly string|array $postType = '',
         private readonly bool $updatePostMetaCache = false,
         private readonly bool $updateTermMetaCache = false,
+        private readonly bool $updatePostThumbnailCache = false,
     ) {
     }
 
@@ -34,7 +37,13 @@ class WpPostsCast implements Cast
      */
     public function cast(DataProperty $property, mixed $value, array $properties, CreationContext $context): WpPosts
     {
-        return self::castValue($value, $this->postType, $this->updatePostMetaCache, $this->updateTermMetaCache);
+        return self::castValue(
+            $value,
+            $this->postType,
+            $this->updatePostMetaCache,
+            $this->updatePostThumbnailCache,
+            $this->updateTermMetaCache,
+        );
     }
 
     /**
@@ -42,19 +51,22 @@ class WpPostsCast implements Cast
      * @param list<string>|string $postType
      * @param bool                $updatePostMetaCache
      * @param bool                $updateTermMetaCache
+     * @param bool                $updatePostThumbnailCache
      */
     public static function castValue(
         mixed $value,
         string|array $postType = '',
         bool $updatePostMetaCache = false,
         bool $updateTermMetaCache = false,
+        bool $updatePostThumbnailCache = false,
     ): WpPosts {
         if (!is_array($value)) {
             return new WpPosts(
                 ids: [],
                 postTypes: $postType,
                 updatePostMetaCache: $updatePostMetaCache,
-                updateTermMetaCache: $updateTermMetaCache
+                updateTermMetaCache: $updateTermMetaCache,
+                updatePostThumbnailCache: $updatePostThumbnailCache,
             );
         }
 
@@ -73,12 +85,17 @@ class WpPostsCast implements Cast
             $posts[] = $item;
         }
 
+        if (count($posts) > 0) {
+            GetPosts::updatePostThumbnailCache($ids);
+        }
+
         return new WpPosts(
-            ids: [],
+            ids: $ids,
             postTypes: $postType,
             posts: $posts,
             updatePostMetaCache: $updatePostMetaCache,
-            updateTermMetaCache: $updateTermMetaCache
+            updateTermMetaCache: $updateTermMetaCache,
+            updatePostThumbnailCache: $updatePostThumbnailCache,
         );
     }
 }

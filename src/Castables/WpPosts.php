@@ -5,14 +5,13 @@ declare(strict_types=1);
 namespace Kaiseki\WordPress\ACF\Dto\Castables;
 
 use Kaiseki\WordPress\ACF\Dto\Casts\WpPostsCast;
+use Kaiseki\WordPress\ACF\Dto\Util\GetPosts;
 use Kaiseki\WordPress\ACF\Exceptions\InvalidAttributeType;
 use Spatie\LaravelData\Casts\Cast;
 use Spatie\LaravelData\Casts\Castable;
 use WP_Post;
 
-use function acf_get_posts;
 use function count;
-use function function_exists;
 use function is_array;
 use function is_string;
 use function trigger_error;
@@ -30,6 +29,7 @@ class WpPosts implements Castable
         private array $posts = [],
         private readonly bool $updatePostMetaCache = false,
         private readonly bool $updateTermMetaCache = false,
+        private readonly bool $updatePostThumbnailCache = false,
     ) {
     }
 
@@ -50,17 +50,19 @@ class WpPosts implements Castable
             return $this->posts;
         }
 
-        if (!function_exists('acf_get_posts')) {
-            return [];
-        }
-
-        return $this->posts = acf_get_posts([
+        $this->posts = GetPosts::getPosts([
             'post__in' => $this->ids,
             'post_type' => $this->postTypes,
             'no_found_rows' => true,
             'update_post_meta_cache' => $this->updatePostMetaCache,
             'update_post_term_cache' => $this->updateTermMetaCache,
         ]);
+
+        if ($this->updatePostThumbnailCache) {
+            GetPosts::updatePostThumbnailCache($this->ids);
+        }
+
+        return $this->posts;
     }
 
     /**

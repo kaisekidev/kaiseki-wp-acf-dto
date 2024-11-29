@@ -5,15 +5,14 @@ declare(strict_types=1);
 namespace Kaiseki\WordPress\ACF\Dto\Castables;
 
 use Kaiseki\WordPress\ACF\Dto\Casts\WpPostCast;
+use Kaiseki\WordPress\ACF\Dto\Util\GetPosts;
 use Kaiseki\WordPress\ACF\Exceptions\InvalidAttributeType;
 use Spatie\LaravelData\Casts\Cast;
 use Spatie\LaravelData\Casts\Castable;
 use WP_Post;
 
-use function acf_get_posts;
 use function count;
 use function current;
-use function function_exists;
 use function is_array;
 use function is_string;
 use function trigger_error;
@@ -46,11 +45,7 @@ class WpPost implements Castable
             return $this->post;
         }
 
-        if (!function_exists('acf_get_posts')) {
-            return null;
-        }
-
-        $posts = acf_get_posts([
+        $posts = GetPosts::getPosts([
             'post__in' => $this->id,
             'post_type' => $this->postType,
             'no_found_rows' => true,
