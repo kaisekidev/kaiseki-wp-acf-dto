@@ -27,6 +27,8 @@ class WpPost implements Castable
         /** @var list<string>|string */
         private readonly string|array $postType = '',
         private ?WP_Post $post = null,
+        private readonly bool $updatePostMetaCache = false,
+        private readonly bool $updateTermMetaCache = false,
     ) {
     }
 
@@ -52,6 +54,8 @@ class WpPost implements Castable
             'post__in' => $this->id,
             'post_type' => $this->postType,
             'no_found_rows' => true,
+            'update_post_meta_cache' => $this->updatePostMetaCache,
+            'update_post_term_cache' => $this->updateTermMetaCache,
         ]);
 
         if (count($posts) > 0) {

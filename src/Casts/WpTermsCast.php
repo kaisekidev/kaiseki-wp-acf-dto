@@ -17,7 +17,8 @@ use function is_array;
 class WpTermsCast implements Cast
 {
     public function __construct(
-        private readonly string $taxonomy
+        private readonly string $taxonomy,
+        private readonly bool $updateTermMetaCache = false
     ) {
     }
 
@@ -31,13 +32,17 @@ class WpTermsCast implements Cast
      */
     public function cast(DataProperty $property, mixed $value, array $properties, CreationContext $context): WpTerms
     {
-        return self::castValue($value, $this->taxonomy);
+        return self::castValue($value, $this->taxonomy, $this->updateTermMetaCache);
     }
 
-    public static function castValue(mixed $value, string $taxonomy): WpTerms
+    public static function castValue(mixed $value, string $taxonomy, bool $updateTermMetaCache = false): WpTerms
     {
         if (!is_array($value)) {
-            return new WpTerms([], $taxonomy);
+            return new WpTerms(
+                ids: [],
+                taxonomy: $taxonomy,
+                updateTermMetaCache: $updateTermMetaCache,
+            );
         }
 
         $ids = [];
@@ -55,6 +60,11 @@ class WpTermsCast implements Cast
             $terms[] = $item;
         }
 
-        return new WpTerms($ids, $taxonomy, $terms);
+        return new WpTerms(
+            ids: $ids,
+            taxonomy: $taxonomy,
+            terms: $terms,
+            updateTermMetaCache: $updateTermMetaCache,
+        );
     }
 }

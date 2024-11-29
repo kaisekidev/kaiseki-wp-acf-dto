@@ -18,7 +18,8 @@ use function is_numeric;
 class WpTermCast implements Cast
 {
     public function __construct(
-        private readonly string $taxonomy
+        private readonly string $taxonomy,
+        private readonly bool $updateTermMetaCache = false
     ) {
     }
 
@@ -32,10 +33,10 @@ class WpTermCast implements Cast
      */
     public function cast(DataProperty $property, mixed $value, array $properties, CreationContext $context): ?WpTerm
     {
-        return self::castValue($value, $this->taxonomy);
+        return self::castValue($value, $this->taxonomy, $this->updateTermMetaCache);
     }
 
-    public static function castValue(mixed $value, string $taxonomy): ?WpTerm
+    public static function castValue(mixed $value, string $taxonomy, bool $updateTermMetaCache = false): ?WpTerm
     {
         $termId = self::getTermId($value);
 
@@ -43,6 +44,7 @@ class WpTermCast implements Cast
             $termId,
             $taxonomy,
             $value instanceof WP_Term ? $value : null,
+            $updateTermMetaCache,
         ) : null;
     }
 

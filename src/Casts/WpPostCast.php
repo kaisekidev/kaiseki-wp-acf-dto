@@ -19,9 +19,13 @@ class WpPostCast implements Cast
 {
     /**
      * @param list<string>|string $postType
+     * @param bool                $updatePostMetaCache
+     * @param bool                $updateTermMetaCache
      */
     public function __construct(
         private readonly string|array $postType = '',
+        private readonly bool $updatePostMetaCache = false,
+        private readonly bool $updateTermMetaCache = false,
     ) {
     }
 
@@ -35,21 +39,29 @@ class WpPostCast implements Cast
      */
     public function cast(DataProperty $property, mixed $value, array $properties, CreationContext $context): ?WpPost
     {
-        return self::castValue($value, $this->postType);
+        return self::castValue($value, $this->postType, $this->updatePostMetaCache, $this->updateTermMetaCache);
     }
 
     /**
      * @param mixed               $value
      * @param list<string>|string $postType
+     * @param bool                $updatePostMetaCache
+     * @param bool                $updateTermMetaCache
      */
-    public static function castValue(mixed $value, string|array $postType = ''): ?WpPost
-    {
+    public static function castValue(
+        mixed $value,
+        string|array $postType = '',
+        bool $updatePostMetaCache = false,
+        bool $updateTermMetaCache = false,
+    ): ?WpPost {
         $postId = self::getPostId($value);
 
         return $postId !== null ? new WpPost(
             $postId,
             $postType,
             $value instanceof WP_Post ? $value : null,
+            $updatePostMetaCache,
+            $updateTermMetaCache,
         ) : null;
     }
 

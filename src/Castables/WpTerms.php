@@ -26,6 +26,7 @@ class WpTerms implements Castable
         private readonly string $taxonomy,
         /** @var list<WP_Term> */
         private array $terms = [],
+        private readonly bool $updateTermMetaCache = false
     ) {
     }
 
@@ -53,6 +54,7 @@ class WpTerms implements Castable
         return $this->terms = acf_get_terms([
             'taxonomy' => $this->taxonomy,
             'include' => $this->ids,
+            'update_term_meta_cache' => $this->updateTermMetaCache,
         ]);
     }
 

@@ -22,6 +22,7 @@ class WpTerm implements Castable
         private readonly int $id,
         private readonly string $taxonomy = 'category',
         private ?WP_Term $term = null,
+        private readonly bool $updateTermMetaCache = false
     ) {
     }
 
@@ -45,6 +46,7 @@ class WpTerm implements Castable
                 'taxonomy' => $this->taxonomy,
                 'include' => [$this->id],
                 'hide_empty' => false,
+                'update_term_meta_cache' => $this->updateTermMetaCache,
             ]
         );
 

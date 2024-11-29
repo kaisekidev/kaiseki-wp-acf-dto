@@ -28,6 +28,8 @@ class WpPosts implements Castable
         private readonly string|array $postTypes = '',
         /** @var list<WP_Post> */
         private array $posts = [],
+        private readonly bool $updatePostMetaCache = false,
+        private readonly bool $updateTermMetaCache = false,
     ) {
     }
 
@@ -56,6 +58,8 @@ class WpPosts implements Castable
             'post__in' => $this->ids,
             'post_type' => $this->postTypes,
             'no_found_rows' => true,
+            'update_post_meta_cache' => $this->updatePostMetaCache,
+            'update_post_term_cache' => $this->updateTermMetaCache,
         ]);
     }
 

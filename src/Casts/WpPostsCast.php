@@ -19,6 +19,8 @@ class WpPostsCast implements Cast
     public function __construct(
         /** @var list<string>|string */
         private readonly string|array $postType = '',
+        private readonly bool $updatePostMetaCache = false,
+        private readonly bool $updateTermMetaCache = false,
     ) {
     }
 
@@ -32,17 +34,28 @@ class WpPostsCast implements Cast
      */
     public function cast(DataProperty $property, mixed $value, array $properties, CreationContext $context): WpPosts
     {
-        return self::castValue($value, $this->postType);
+        return self::castValue($value, $this->postType, $this->updatePostMetaCache, $this->updateTermMetaCache);
     }
 
     /**
      * @param mixed               $value
      * @param list<string>|string $postType
+     * @param bool                $updatePostMetaCache
+     * @param bool                $updateTermMetaCache
      */
-    public static function castValue(mixed $value, string|array $postType = ''): WpPosts
-    {
+    public static function castValue(
+        mixed $value,
+        string|array $postType = '',
+        bool $updatePostMetaCache = false,
+        bool $updateTermMetaCache = false,
+    ): WpPosts {
         if (!is_array($value)) {
-            return new WpPosts([], $postType);
+            return new WpPosts(
+                ids: [],
+                postTypes: $postType,
+                updatePostMetaCache: $updatePostMetaCache,
+                updateTermMetaCache: $updateTermMetaCache
+            );
         }
 
         $ids = [];
@@ -60,6 +73,12 @@ class WpPostsCast implements Cast
             $posts[] = $item;
         }
 
-        return new WpPosts($ids, $postType, $posts);
+        return new WpPosts(
+            ids: [],
+            postTypes: $postType,
+            posts: $posts,
+            updatePostMetaCache: $updatePostMetaCache,
+            updateTermMetaCache: $updateTermMetaCache
+        );
     }
 }
