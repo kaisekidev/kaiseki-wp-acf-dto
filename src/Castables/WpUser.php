@@ -5,14 +5,13 @@ declare(strict_types=1);
 namespace Kaiseki\WordPress\ACF\Dto\Castables;
 
 use Kaiseki\WordPress\ACF\Dto\Casts\WpUserCast;
+use Kaiseki\WordPress\ACF\Dto\Util\GetUsers;
 use Spatie\LaravelData\Casts\Cast;
 use Spatie\LaravelData\Casts\Castable;
 use WP_User;
 
-use function acf_get_users;
 use function count;
 use function current;
-use function function_exists;
 use function get_avatar;
 
 class WpUser implements Castable
@@ -34,11 +33,7 @@ class WpUser implements Castable
             return $this->user;
         }
 
-        if (!function_exists('acf_get_users')) {
-            return null;
-        }
-
-        $users = acf_get_users([
+        $users = GetUsers::getUsers([
             'include' => [$this->id],
         ]);
 

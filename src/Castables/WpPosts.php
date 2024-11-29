@@ -46,7 +46,7 @@ class WpPosts implements Castable
      */
     public function getPosts(): array
     {
-        if (count($this->posts) > 0) {
+        if (count($this->posts) > 0 || count($this->ids) < 1) {
             return $this->posts;
         }
 

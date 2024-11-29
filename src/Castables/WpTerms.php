@@ -6,14 +6,13 @@ namespace Kaiseki\WordPress\ACF\Dto\Castables;
 
 use Attribute;
 use Kaiseki\WordPress\ACF\Dto\Casts\WpTermsCast;
+use Kaiseki\WordPress\ACF\Dto\Util\GetTerms;
 use Kaiseki\WordPress\ACF\Exceptions\MissingAttribute;
 use Spatie\LaravelData\Casts\Cast;
 use Spatie\LaravelData\Casts\Castable;
 use WP_Term;
 
-use function acf_get_terms;
 use function count;
-use function function_exists;
 use function is_string;
 
 #[Attribute(Attribute::TARGET_CLASS | Attribute::TARGET_PROPERTY)]
@@ -43,15 +42,11 @@ class WpTerms implements Castable
      */
     public function getTerms(): array
     {
-        if (count($this->terms) > 0) {
+        if (count($this->terms) > 0 || count($this->ids) < 1) {
             return $this->terms;
         }
 
-        if (count($this->ids) < 1 || !function_exists('acf_get_terms')) {
-            return [];
-        }
-
-        return $this->terms = acf_get_terms([
+        return $this->terms = GetTerms::getTerms([
             'taxonomy' => $this->taxonomy,
             'include' => $this->ids,
             'update_term_meta_cache' => $this->updateTermMetaCache,

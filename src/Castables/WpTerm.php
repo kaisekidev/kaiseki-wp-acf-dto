@@ -5,15 +5,14 @@ declare(strict_types=1);
 namespace Kaiseki\WordPress\ACF\Dto\Castables;
 
 use Kaiseki\WordPress\ACF\Dto\Casts\WpTermCast;
+use Kaiseki\WordPress\ACF\Dto\Util\GetTerms;
 use Kaiseki\WordPress\ACF\Exceptions\MissingAttribute;
 use Spatie\LaravelData\Casts\Cast;
 use Spatie\LaravelData\Casts\Castable;
 use WP_Term;
 
-use function acf_get_terms;
 use function count;
 use function current;
-use function function_exists;
 use function is_string;
 
 class WpTerm implements Castable
@@ -37,18 +36,12 @@ class WpTerm implements Castable
             return $this->term;
         }
 
-        if (!function_exists('acf_get_terms')) {
-            return null;
-        }
-
-        $terms = acf_get_terms(
-            [
-                'taxonomy' => $this->taxonomy,
-                'include' => [$this->id],
-                'hide_empty' => false,
-                'update_term_meta_cache' => $this->updateTermMetaCache,
-            ]
-        );
+        $terms = GetTerms::getTerms([
+            'taxonomy' => $this->taxonomy,
+            'include' => [$this->id],
+            'hide_empty' => false,
+            'update_term_meta_cache' => $this->updateTermMetaCache,
+        ]);
 
         if (count($terms) > 0) {
             return $this->term = current($terms);
