@@ -8,9 +8,7 @@ use Spatie\LaravelData\Casts\Cast;
 use Spatie\LaravelData\Support\Creation\CreationContext;
 use Spatie\LaravelData\Support\DataProperty;
 
-use function is_array;
-
-class ArrayTypeCast implements Cast
+class BoolCast implements Cast
 {
     /**
      * @param DataProperty    $property
@@ -18,20 +16,15 @@ class ArrayTypeCast implements Cast
      * @param array<mixed>    $properties
      * @param CreationContext $context
      *
-     * @return array<mixed>
+     * @return bool
      */
-    public function cast(DataProperty $property, mixed $value, array $properties, CreationContext $context): array
+    public function cast(DataProperty $property, mixed $value, array $properties, CreationContext $context): bool
     {
         return self::castValue($value);
     }
 
-    /**
-     * @param mixed $value
-     *
-     * @return array<mixed>
-     */
-    public static function castValue(mixed $value): array
+    public static function castValue(mixed $value): bool
     {
-        return is_array($value) ? $value : [];
+        return (bool)$value;
     }
 }
