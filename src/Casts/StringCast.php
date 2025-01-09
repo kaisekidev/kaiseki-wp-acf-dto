@@ -20,13 +20,13 @@ class StringCast implements Cast
      *
      * @return string|null
      */
-    public function cast(DataProperty $property, mixed $value, array $properties, CreationContext $context): ?string
+    public function cast(DataProperty $property, mixed $value, array $properties, CreationContext $context): string
     {
         return self::castValue($value);
     }
 
-    public static function castValue(mixed $value): ?string
+    public static function castValue(mixed $value): string
     {
-        return is_string($value) ? $value : null;
+        return is_string($value) ? $value : '';
     }
 }
