@@ -20,7 +20,7 @@ class ArrayTypeCast implements Cast
      *
      * @return array<mixed>|null
      */
-    public function cast(DataProperty $property, mixed $value, array $properties, CreationContext $context): ?array
+    public function cast(DataProperty $property, mixed $value, array $properties, CreationContext $context): array
     {
         return self::castValue($value);
     }
@@ -30,8 +30,8 @@ class ArrayTypeCast implements Cast
      *
      * @return array<mixed>|null
      */
-    public static function castValue(mixed $value): ?array
+    public static function castValue(mixed $value): array
     {
-        return is_array($value) ? $value : null;
+        return is_array($value) ? $value : [];
     }
 }
