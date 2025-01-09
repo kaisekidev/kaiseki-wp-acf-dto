@@ -26,16 +26,17 @@ class NumberCast implements Cast
      */
     public function cast(DataProperty $property, mixed $value, array $properties, CreationContext $context): int|float|null
     {
-        return self::castValue($value);
+        // @phpstan-ignore argument.type
+        return self::castValue($value, $property->hasDefaultValue ? $property->defaultValue : null);
     }
 
-    public static function castValue(mixed $value): int|float|null
+    public static function castValue(mixed $value, int|float|null $default = null): int|float|null
     {
         if (is_int($value) || is_float($value)) {
             return $value;
         }
         if (!is_numeric($value)) {
-            return null;
+            return $default;
         }
 
         return ctype_digit($value) || (!str_contains($value, '.') && !str_contains($value, ','))

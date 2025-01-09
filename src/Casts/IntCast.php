@@ -22,11 +22,12 @@ class IntCast implements Cast
      */
     public function cast(DataProperty $property, mixed $value, array $properties, CreationContext $context): ?int
     {
-        return self::castValue($value);
+        // @phpstan-ignore argument.type
+        return self::castValue($value, $property->hasDefaultValue ? $property->defaultValue : null);
     }
 
-    public static function castValue(mixed $value): ?int
+    public static function castValue(mixed $value, ?int $default = null): ?int
     {
-        return is_numeric($value) ? (int)$value : null;
+        return is_numeric($value) ? (int)$value : $default;
     }
 }

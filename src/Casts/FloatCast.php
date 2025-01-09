@@ -22,11 +22,12 @@ class FloatCast implements Cast
      */
     public function cast(DataProperty $property, mixed $value, array $properties, CreationContext $context): ?float
     {
-        return self::castValue($value);
+        // @phpstan-ignore argument.type
+        return self::castValue($value, $property->hasDefaultValue ? $property->defaultValue : null);
     }
 
-    public static function castValue(mixed $value): ?float
+    public static function castValue(mixed $value, ?float $default = null): ?float
     {
-        return is_numeric($value) ? (float)$value : null;
+        return is_numeric($value) ? (float)$value : $default;
     }
 }
