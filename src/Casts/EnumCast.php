@@ -7,7 +7,6 @@ namespace Kaiseki\WordPress\ACF\Dto\Casts;
 use BackedEnum;
 use Spatie\LaravelData\Casts\Cast;
 use Spatie\LaravelData\Casts\IterableItemCast;
-use Spatie\LaravelData\Casts\Uncastable;
 use Spatie\LaravelData\Exceptions\CannotCastEnum;
 use Spatie\LaravelData\Support\Creation\CreationContext;
 use Spatie\LaravelData\Support\DataProperty;
@@ -20,7 +19,7 @@ class EnumCast implements Cast, IterableItemCast
     ) {
     }
 
-    public function cast(DataProperty $property, mixed $value, array $properties, CreationContext $context): BackedEnum|Uncastable
+    public function cast(DataProperty $property, mixed $value, array $properties, CreationContext $context): BackedEnum|null
     {
         /** @var class-string<BackedEnum> $type */
         $type = $this->type ?? $property->type->type->findAcceptedTypeForBaseType(BackedEnum::class);
@@ -32,7 +31,7 @@ class EnumCast implements Cast, IterableItemCast
         );
     }
 
-    public function castIterableItem(DataProperty $property, mixed $value, array $properties, CreationContext $context): BackedEnum|Uncastable
+    public function castIterableItem(DataProperty $property, mixed $value, array $properties, CreationContext $context): BackedEnum|null
     {
         /** @var class-string<BackedEnum> $type */
         $type = $property->type->iterableItemType;
@@ -51,15 +50,15 @@ class EnumCast implements Cast, IterableItemCast
      *
      * @throws CannotCastEnum
      *
-     * @return BackedEnum|Uncastable
+     * @return BackedEnum|null
      */
     protected function castValue(
         ?string $type,
         mixed $value,
         ?BackedEnum $default = null,
-    ): BackedEnum|Uncastable {
+    ): BackedEnum|null {
         if ($type === null) {
-            return Uncastable::create();
+            return null;
         }
 
         if ($value instanceof $type) {
@@ -75,7 +74,7 @@ class EnumCast implements Cast, IterableItemCast
                 return $default;
             }
 
-            throw CannotCastEnum::create($type, $value);
+            return null;
         }
     }
 }
