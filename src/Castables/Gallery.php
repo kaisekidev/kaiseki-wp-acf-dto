@@ -18,15 +18,16 @@ use function wp_get_attachment_url;
 
 class Gallery implements Castable
 {
+    /** @var list<array<string, mixed>> */
+    private ?array $attachments = null;
+    /** @var list<WP_Post> */
+    private ?array $posts = null;
+    /** @var list<string> */
+    private ?array $urls = null;
+
     public function __construct(
         /** @var array<int> */
         private readonly array $ids = [],
-        /** @var list<array<string, mixed>> */
-        private ?array $attachments = null,
-        /** @var list<WP_Post> */
-        private ?array $posts = null,
-        /** @var list<string> */
-        private ?array $urls = null,
     ) {
     }
 
