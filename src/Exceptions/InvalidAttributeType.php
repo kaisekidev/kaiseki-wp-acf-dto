@@ -2,7 +2,7 @@
 
 declare(strict_types=1);
 
-namespace Kaiseki\WordPress\ACF\Exceptions;
+namespace Kaiseki\WordPress\ACF\Dto\Exceptions;
 
 use Exception;
 

@@ -6,8 +6,8 @@ namespace Kaiseki\WordPress\ACF\Dto\Castables;
 
 use Attribute;
 use Kaiseki\WordPress\ACF\Dto\Casts\WpTermsCast;
+use Kaiseki\WordPress\ACF\Dto\Exceptions\MissingAttribute;
 use Kaiseki\WordPress\ACF\Dto\Util\GetTerms;
-use Kaiseki\WordPress\ACF\Exceptions\MissingAttribute;
 use Spatie\LaravelData\Casts\Cast;
 use Spatie\LaravelData\Casts\Castable;
 use WP_Term;

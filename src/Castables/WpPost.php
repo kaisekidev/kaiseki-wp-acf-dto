@@ -5,8 +5,8 @@ declare(strict_types=1);
 namespace Kaiseki\WordPress\ACF\Dto\Castables;
 
 use Kaiseki\WordPress\ACF\Dto\Casts\WpPostCast;
+use Kaiseki\WordPress\ACF\Dto\Exceptions\InvalidAttributeType;
 use Kaiseki\WordPress\ACF\Dto\Util\GetPosts;
-use Kaiseki\WordPress\ACF\Exceptions\InvalidAttributeType;
 use Spatie\LaravelData\Casts\Cast;
 use Spatie\LaravelData\Casts\Castable;
 use WP_Post;
@@ -14,6 +14,7 @@ use WP_Post;
 use function count;
 use function current;
 use function is_array;
+use function is_bool;
 use function is_string;
 use function trigger_error;
 
@@ -21,17 +22,18 @@ use const E_USER_WARNING;
 
 class WpPost implements Castable
 {
+    private ?WP_Post $post = null;
+
     public function __construct(
-        private readonly ?int $id = null,
+        private readonly int $id,
         /** @var list<string>|string */
-        private readonly string|array $postType = '',
-        private ?WP_Post $post = null,
+        private readonly string|array $postType = 'any',
         private readonly bool $updatePostMetaCache = false,
         private readonly bool $updateTermMetaCache = false,
     ) {
     }
 
-    public function getPostId(): ?int
+    public function getPostId(): int
     {
         return $this->id;
     }
@@ -67,14 +69,33 @@ class WpPost implements Castable
      */
     public static function dataCastUsing(...$arguments): Cast
     {
-        if (!isset($arguments[0])) {
+        [$postType, $updatePostMetaCache, $updateTermMetaCache] = $arguments;
+
+        if ($postType === null) {
             trigger_error('Missing WithCastable attribute "postType" for WpPostCastable', E_USER_WARNING);
         }
-        $postType = $arguments[0] ?? '';
-        if (!is_string($postType) && !is_array($postType)) {
+
+        if ($postType !== null && !is_string($postType) && !is_array($postType)) {
             throw InvalidAttributeType::create('postType', 'string|array');
         }
 
-        return new WpPostCast($postType);
+        if (is_array($postType)) {
+            foreach ($postType as $type) {
+                if (!is_string($type)) {
+                    throw InvalidAttributeType::create('postType', 'string|array');
+                }
+            }
+        }
+
+        if ($updatePostMetaCache !== null && !is_bool($updatePostMetaCache)) {
+            throw InvalidAttributeType::create('updatePostMetaCache', 'bool');
+        }
+
+        if ($updateTermMetaCache !== null && !is_bool($updateTermMetaCache)) {
+            throw InvalidAttributeType::create('updatePostMetaCache', 'bool');
+        }
+
+        /** @var array{0?: list<string>|string, 1?: bool, 2?: bool} $arguments */
+        return new WpPostCast(...$arguments);
     }
 }

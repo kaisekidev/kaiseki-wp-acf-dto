@@ -5,8 +5,8 @@ declare(strict_types=1);
 namespace Kaiseki\WordPress\ACF\Dto\Castables;
 
 use Kaiseki\WordPress\ACF\Dto\Casts\WpPostsCast;
+use Kaiseki\WordPress\ACF\Dto\Exceptions\InvalidAttributeType;
 use Kaiseki\WordPress\ACF\Dto\Util\GetPosts;
-use Kaiseki\WordPress\ACF\Exceptions\InvalidAttributeType;
 use Spatie\LaravelData\Casts\Cast;
 use Spatie\LaravelData\Casts\Castable;
 use WP_Post;

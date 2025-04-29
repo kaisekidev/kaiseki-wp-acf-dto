@@ -23,7 +23,7 @@ class WpPostCast implements Cast
      * @param bool                $updateTermMetaCache
      */
     public function __construct(
-        private readonly string|array $postType = '',
+        private readonly string|array $postType = 'any',
         private readonly bool $updatePostMetaCache = false,
         private readonly bool $updateTermMetaCache = false,
     ) {
@@ -50,7 +50,7 @@ class WpPostCast implements Cast
      */
     public static function castValue(
         mixed $value,
-        string|array $postType = '',
+        string|array $postType = 'any',
         bool $updatePostMetaCache = false,
         bool $updateTermMetaCache = false,
     ): ?WpPost {
@@ -59,7 +59,6 @@ class WpPostCast implements Cast
         return $postId !== null ? new WpPost(
             $postId,
             $postType,
-            $value instanceof WP_Post ? $value : null,
             $updatePostMetaCache,
             $updateTermMetaCache,
         ) : null;
@@ -70,6 +69,7 @@ class WpPostCast implements Cast
         if (is_numeric($value)) {
             return (int)$value;
         }
+
         if (is_array($value) && isset($value['ID'])) {
             return (int)$value['ID'];
         }
