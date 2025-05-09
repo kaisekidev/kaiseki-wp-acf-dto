@@ -20,7 +20,7 @@ class WpPostsCast implements Cast
 {
     public function __construct(
         /** @var list<string>|string */
-        private readonly string|array $postType = '',
+        private readonly string|array $postType = 'any',
         private readonly bool $updatePostMetaCache = false,
         private readonly bool $updateTermMetaCache = false,
         private readonly bool $updatePostThumbnailCache = false,
@@ -55,7 +55,7 @@ class WpPostsCast implements Cast
      */
     public static function castValue(
         mixed $value,
-        string|array $postType = '',
+        string|array $postType = 'any',
         bool $updatePostMetaCache = false,
         bool $updateTermMetaCache = false,
         bool $updatePostThumbnailCache = false,

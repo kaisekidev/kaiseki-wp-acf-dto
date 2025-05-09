@@ -12,6 +12,7 @@ use Spatie\LaravelData\Casts\Cast;
 use Spatie\LaravelData\Casts\Castable;
 use WP_Term;
 
+use function array_pad;
 use function count;
 use function is_string;
 
@@ -60,10 +61,16 @@ class WpTerms implements Castable
      */
     public static function dataCastUsing(...$arguments): Cast
     {
-        if (!isset($arguments[0]) || !is_string($arguments[0])) {
+        [$taxonomy] = array_pad($arguments, 1, null);
+
+        if (
+            $taxonomy === null
+            || !is_string($taxonomy)
+            || $taxonomy === ''
+        ) {
             throw MissingAttribute::castableMissingAttribute('taxonomy');
         }
 
-        return new WpTermsCast($arguments[0]);
+        return new WpTermsCast($taxonomy);
     }
 }

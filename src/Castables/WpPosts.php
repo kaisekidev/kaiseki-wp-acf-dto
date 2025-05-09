@@ -11,8 +11,10 @@ use Spatie\LaravelData\Casts\Cast;
 use Spatie\LaravelData\Casts\Castable;
 use WP_Post;
 
+use function array_pad;
 use function count;
 use function is_array;
+use function is_bool;
 use function is_string;
 use function trigger_error;
 
@@ -72,14 +74,41 @@ class WpPosts implements Castable
      */
     public static function dataCastUsing(...$arguments): Cast
     {
-        if (!isset($arguments[0])) {
+        [$postType, $updatePostMetaCache, $updateTermMetaCache, $updatePostThumbnailCache] = array_pad($arguments, 4, null);
+
+        if ($postType === null) {
             trigger_error('Missing WithCastable attribute "postType" for WpPostsCastable', E_USER_WARNING);
         }
-        $postType = $arguments[0] ?? '';
-        if (!is_string($postType) && !is_array($postType)) {
+
+        if ($postType !== null && !is_string($postType) && !is_array($postType)) {
             throw InvalidAttributeType::create('postType', 'string|array');
         }
 
-        return new WpPostsCast($postType);
+        if (is_array($postType)) {
+            foreach ($postType as $type) {
+                if (!is_string($type)) {
+                    throw InvalidAttributeType::create('postType', 'string|array');
+                }
+            }
+        }
+
+        if ($updatePostMetaCache !== null && !is_bool($updatePostMetaCache)) {
+            throw InvalidAttributeType::create('updatePostMetaCache', 'bool');
+        }
+
+        if ($updateTermMetaCache !== null && !is_bool($updateTermMetaCache)) {
+            throw InvalidAttributeType::create('updatePostMetaCache', 'bool');
+        }
+
+        if ($updatePostThumbnailCache !== null && !is_bool($updatePostThumbnailCache)) {
+            throw InvalidAttributeType::create('updatePostThumbnailCache', 'bool');
+        }
+
+        return new WpPostsCast(
+            $postType ?? 'any',
+            $updatePostMetaCache ?? false,
+            $updateTermMetaCache ?? false,
+            $updatePostThumbnailCache ?? false,
+        );
     }
 }

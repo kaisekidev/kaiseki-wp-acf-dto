@@ -11,6 +11,7 @@ use Spatie\LaravelData\Casts\Cast;
 use Spatie\LaravelData\Casts\Castable;
 use WP_Post;
 
+use function array_pad;
 use function count;
 use function current;
 use function is_array;
@@ -69,7 +70,7 @@ class WpPost implements Castable
      */
     public static function dataCastUsing(...$arguments): Cast
     {
-        [$postType, $updatePostMetaCache, $updateTermMetaCache] = $arguments;
+        [$postType, $updatePostMetaCache, $updateTermMetaCache] = array_pad($arguments, 3, null);
 
         if ($postType === null) {
             trigger_error('Missing WithCastable attribute "postType" for WpPostCastable', E_USER_WARNING);
@@ -95,7 +96,10 @@ class WpPost implements Castable
             throw InvalidAttributeType::create('updatePostMetaCache', 'bool');
         }
 
-        /** @var array{0?: list<string>|string, 1?: bool, 2?: bool} $arguments */
-        return new WpPostCast(...$arguments);
+        return new WpPostCast(
+            $postType ?? 'any',
+            $updatePostMetaCache ?? false,
+            $updateTermMetaCache ?? false,
+        );
     }
 }
