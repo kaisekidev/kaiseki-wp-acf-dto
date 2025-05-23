@@ -54,6 +54,11 @@ class WpTerms implements Castable
         ]);
     }
 
+    public function getTaxonomy(): string
+    {
+        return $this->taxonomy;
+    }
+
     /**
      * @param mixed ...$arguments
      *
