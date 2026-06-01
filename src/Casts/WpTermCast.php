@@ -53,7 +53,7 @@ class WpTermCast implements Cast
         if (is_numeric($value)) {
             return (int)$value;
         }
-        if (is_array($value) && isset($value['ID'])) {
+        if (is_array($value) && isset($value['ID']) && is_numeric($value['ID'])) {
             return (int)$value['ID'];
         }
 

@@ -8,6 +8,7 @@ use Spatie\LaravelData\Casts\Cast;
 use Spatie\LaravelData\Support\Creation\CreationContext;
 use Spatie\LaravelData\Support\DataProperty;
 
+use function is_int;
 use function is_numeric;
 
 class IntCast implements Cast
@@ -22,8 +23,9 @@ class IntCast implements Cast
      */
     public function cast(DataProperty $property, mixed $value, array $properties, CreationContext $context): ?int
     {
-        // @phpstan-ignore argument.type
-        return self::castValue($value, $property->hasDefaultValue ? $property->defaultValue : null);
+        $default = $property->hasDefaultValue ? $property->defaultValue : null;
+
+        return self::castValue($value, is_int($default) ? $default : null);
     }
 
     public static function castValue(mixed $value, ?int $default = null): ?int

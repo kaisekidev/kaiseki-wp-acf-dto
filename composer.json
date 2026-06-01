@@ -29,28 +29,30 @@
     "source": "https://github.com/kaisekidev/kaiseki-wp-acf-dto"
   },
   "require": {
-    "php": "^8.1",
+    "php": "^8.2",
     "ext-ctype": "*",
-    "illuminate/support": ">=10.7",
+    "illuminate/contracts": "^11.0 || ^12.0",
+    "illuminate/support": "^11.0 || ^12.0",
     "jawira/case-converter": "^3.5",
-    "kaiseki/config": "dev-master",
-    "kaiseki/laravel-helper-mocks": "dev-master",
+    "kaiseki/config": "^2.0",
+    "kaiseki/laravel-helper-mocks": "^1.0",
     "psr/container": "^1.1 || ^2.0",
     "respect/validation": "^2.2",
     "spatie/laravel-data": "^4.0"
   },
   "require-dev": {
-    "bnf/phpstan-psr-container": "^1.0",
-    "kaiseki/php-coding-standard": "dev-master",
+    "bnf/phpstan-psr-container": "^1.1",
+    "kaiseki/php-coding-standard": "^1.0",
+    "maglnet/composer-require-checker": "^4.0",
     "php-stubs/acf-pro-stubs": "^6.0",
     "php-stubs/wordpress-stubs": "^6.2",
-    "phpstan/extension-installer": ">=1.3",
-    "phpstan/phpstan": ">=1.2",
-    "phpstan/phpstan-phpunit": ">=1.0",
-    "phpstan/phpstan-strict-rules": ">=1.1",
-    "phpunit/phpunit": "^9.5",
+    "phpstan/extension-installer": "^1.4",
+    "phpstan/phpstan": "^2.0",
+    "phpstan/phpstan-phpunit": "^2.0",
+    "phpstan/phpstan-strict-rules": "^2.0",
+    "phpunit/phpunit": "^11.0",
     "roave/security-advisories": "dev-latest",
-    "szepeviktor/phpstan-wordpress": "^1.3"
+    "szepeviktor/phpstan-wordpress": "^2.0"
   },
   "config": {
     "sort-packages": true,
@@ -90,10 +92,11 @@
   },
   "scripts": {
     "check": [
+      "@check-deps",
       "@cs-check",
-      "@phpstan",
-      "@phpunit"
+      "@phpstan"
     ],
+    "check-deps": "composer-require-checker --config-file=require-checker.config.json",
     "cs-check": "php-cs-fixer fix --dry-run",
     "cs-fix": "php-cs-fixer fix --allow-risky=yes",
     "phpstan": "phpstan analyse --memory-limit 1G",

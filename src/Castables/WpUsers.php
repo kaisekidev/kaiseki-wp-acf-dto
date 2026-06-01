@@ -16,10 +16,12 @@ use function get_avatar;
 
 class WpUsers implements Castable
 {
+    /**
+     * @param list<int>     $ids
+     * @param list<WP_User> $users
+     */
     public function __construct(
-        /** @var array<int> */
         private readonly array $ids,
-        /** @var list<WP_User> */
         private array $users = [],
     ) {
     }

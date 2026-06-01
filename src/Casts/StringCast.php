@@ -22,8 +22,9 @@ class StringCast implements Cast
      */
     public function cast(DataProperty $property, mixed $value, array $properties, CreationContext $context): ?string
     {
-        // @phpstan-ignore argument.type
-        return self::castValue($value, $property->hasDefaultValue ? $property->defaultValue : null);
+        $default = $property->hasDefaultValue ? $property->defaultValue : null;
+
+        return self::castValue($value, is_string($default) ? $default : null);
     }
 
     public static function castValue(mixed $value, ?string $default = null): ?string

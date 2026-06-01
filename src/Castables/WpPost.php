@@ -81,11 +81,14 @@ class WpPost implements Castable
         }
 
         if (is_array($postType)) {
+            $strings = [];
             foreach ($postType as $type) {
                 if (!is_string($type)) {
                     throw InvalidAttributeType::create('postType', 'string|array');
                 }
+                $strings[] = $type;
             }
+            $postType = $strings;
         }
 
         if ($updatePostMetaCache !== null && !is_bool($updatePostMetaCache)) {

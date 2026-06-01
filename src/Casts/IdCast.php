@@ -29,10 +29,10 @@ class IdCast implements Cast
 
     public static function castValue(mixed $value): ?int
     {
-        if (is_object($value) && isset($value->ID)) {
+        if (is_object($value) && isset($value->ID) && is_numeric($value->ID)) {
             return (int)$value->ID;
         }
-        if (is_array($value) && isset($value['ID'])) {
+        if (is_array($value) && isset($value['ID']) && is_numeric($value['ID'])) {
             return (int)$value['ID'];
         }
         if (is_numeric($value) && $value !== '0') {

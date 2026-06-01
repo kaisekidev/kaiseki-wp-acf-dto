@@ -7,7 +7,10 @@ namespace Kaiseki\WordPress\ACF\Dto\Util;
 use WP_Term;
 
 use function acf_get_terms;
+use function array_filter;
+use function array_values;
 use function function_exists;
+use function is_array;
 
 class GetTerms
 {
@@ -22,6 +25,10 @@ class GetTerms
             return [];
         }
 
-        return acf_get_terms($args);
+        $terms = acf_get_terms($args);
+
+        return is_array($terms)
+            ? array_values(array_filter($terms, static fn(mixed $term): bool => $term instanceof WP_Term))
+            : [];
     }
 }

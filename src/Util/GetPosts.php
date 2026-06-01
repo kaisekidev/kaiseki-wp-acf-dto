@@ -8,7 +8,10 @@ use WP_Post;
 use WP_Query;
 
 use function acf_get_posts;
+use function array_filter;
+use function array_values;
 use function function_exists;
+use function is_array;
 use function update_post_thumbnail_cache;
 
 class GetPosts
@@ -24,7 +27,11 @@ class GetPosts
             return [];
         }
 
-        return acf_get_posts($args);
+        $posts = acf_get_posts($args);
+
+        return is_array($posts)
+            ? array_values(array_filter($posts, static fn(mixed $post): bool => $post instanceof WP_Post))
+            : [];
     }
 
     /**

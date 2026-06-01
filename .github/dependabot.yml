@@ -1,0 +1,40 @@
+# Dependabot config — copy to `.github/dependabot.yml` in each kaiseki/* package.
+#
+# Keeps dev tooling (phpstan, php-cs-fixer, phpunit, ...) and GitHub Actions up
+# to date so the one-off 8.4 migration doesn't recur. Dev dependencies are
+# grouped into a single weekly PR to cut noise; production (runtime) deps get
+# individual PRs because they affect downstream consumers and warrant review.
+#
+# NOTE: Dependabot can only manage the internal kaiseki/* deps once they are on
+# SemVer ranges (e.g. ^1.0). While they are still `dev-master` it leaves them
+# alone — which is fine; the SemVer migration (IMPLEMENTATION_PLAN.md §6) fixes
+# that.
+
+version: 2
+updates:
+  - package-ecosystem: composer
+    directory: "/"
+    schedule:
+      interval: weekly
+      day: monday
+    open-pull-requests-limit: 10
+    labels:
+      - dependencies
+    groups:
+      dev-dependencies:
+        dependency-type: development
+        patterns:
+          - "*"
+    ignore:
+      # respect/validation 3.x requires PHP 8.5 — hold at ^2.x while we target 8.4.
+      - dependency-name: "respect/validation"
+        update-types: ["version-update:semver-major"]
+
+  - package-ecosystem: github-actions
+    directory: "/"
+    schedule:
+      interval: weekly
+      day: monday
+    labels:
+      - dependencies
+      - github-actions

@@ -11,6 +11,9 @@ use Spatie\LaravelData\Concerns\TransformableData;
 use Spatie\LaravelData\Contracts\BaseData as BaseDataContract;
 use Spatie\LaravelData\Contracts\TransformableData as TransformableDataContract;
 
+/**
+ * @implements BaseDataContract<self, mixed, array-key>
+ */
 class Data implements BaseDataContract, TransformableDataContract
 {
     use TransformableData;
