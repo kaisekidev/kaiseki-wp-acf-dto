@@ -70,7 +70,7 @@ class WpPostCast implements Cast
             return (int)$value;
         }
 
-        if (is_array($value) && isset($value['ID'])) {
+        if (is_array($value) && isset($value['ID']) && is_numeric($value['ID'])) {
             return (int)$value['ID'];
         }
 

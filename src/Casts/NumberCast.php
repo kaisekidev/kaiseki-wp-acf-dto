@@ -26,8 +26,9 @@ class NumberCast implements Cast
      */
     public function cast(DataProperty $property, mixed $value, array $properties, CreationContext $context): int|float|null
     {
-        // @phpstan-ignore argument.type
-        return self::castValue($value, $property->hasDefaultValue ? $property->defaultValue : null);
+        $default = $property->hasDefaultValue ? $property->defaultValue : null;
+
+        return self::castValue($value, is_int($default) || is_float($default) ? $default : null);
     }
 
     public static function castValue(mixed $value, int|float|null $default = null): int|float|null

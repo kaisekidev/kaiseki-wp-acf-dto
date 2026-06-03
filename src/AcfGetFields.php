@@ -5,11 +5,15 @@ declare(strict_types=1);
 namespace Kaiseki\WordPress\ACF\Dto;
 
 use function add_filter;
+use function array_filter;
 use function function_exists;
 use function get_fields;
 use function in_array;
 use function is_array;
+use function is_string;
 use function remove_filter;
+
+use const ARRAY_FILTER_USE_KEY;
 
 class AcfGetFields
 {
@@ -48,7 +52,7 @@ class AcfGetFields
         remove_filter('acf/pre_format_value', $filter);
         remove_filter('acf/format_value', [$this, 'normalizeEmptyFieldValues']);
 
-        return is_array($values) ? $values : [];
+        return self::stringKeyedArray($values);
     }
 
     /**
@@ -86,7 +90,7 @@ class AcfGetFields
         remove_filter('acf/pre_format_value', $filter);
         remove_filter('acf/format_value', [$this, 'normalizeEmptyFieldValues']);
 
-        return is_array($values) ? $values : [];
+        return self::stringKeyedArray($values);
     }
 
     /**
@@ -130,5 +134,19 @@ class AcfGetFields
         return isset($field['type']) && $field['type'] !== 'true_false' && $value === false
             ? null
             : $value;
+    }
+
+    /**
+     * @param mixed $values
+     *
+     * @return array<string, mixed>
+     */
+    private static function stringKeyedArray(mixed $values): array
+    {
+        if (!is_array($values)) {
+            return [];
+        }
+
+        return array_filter($values, static fn(int|string $key): bool => is_string($key), ARRAY_FILTER_USE_KEY);
     }
 }

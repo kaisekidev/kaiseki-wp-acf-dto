@@ -5,16 +5,18 @@ declare(strict_types=1);
 namespace Kaiseki\WordPress\ACF\Dto\Castables;
 
 use Kaiseki\WordPress\ACF\Dto\Casts\GalleryCast;
+use Kaiseki\WordPress\ACF\Dto\Util\GetPosts;
 use Spatie\LaravelData\Casts\Cast;
 use Spatie\LaravelData\Casts\Castable;
 use WP_Post;
 
 use function acf_get_attachment;
-use function acf_get_posts;
-use function array_reduce;
+use function array_filter;
 use function is_array;
 use function is_string;
 use function wp_get_attachment_url;
+
+use const ARRAY_FILTER_USE_KEY;
 
 class Gallery implements Castable
 {
@@ -25,8 +27,10 @@ class Gallery implements Castable
     /** @var list<string> */
     private ?array $urls = null;
 
+    /**
+     * @param list<int> $ids
+     */
     public function __construct(
-        /** @var array<int> */
         private readonly array $ids = [],
     ) {
     }
@@ -36,7 +40,7 @@ class Gallery implements Castable
      */
     public function getPosts(): array
     {
-        return $this->posts ??= acf_get_posts([
+        return $this->posts ??= GetPosts::getPosts([
             'post_type' => 'attachment',
             'post__in' => $this->ids,
             'update_post_meta_cache' => true,
@@ -57,14 +61,23 @@ class Gallery implements Castable
      */
     public function getAttachmentArrays(): array
     {
-        return $this->attachments ??= array_reduce($this->ids, function (array $carry, int $postId) {
+        if ($this->attachments !== null) {
+            return $this->attachments;
+        }
+
+        $attachments = [];
+        foreach ($this->ids as $postId) {
             $attachment = acf_get_attachment($postId);
             if (is_array($attachment)) {
-                $carry[] = $attachment;
+                $attachments[] = array_filter(
+                    $attachment,
+                    static fn(int|string $key): bool => is_string($key),
+                    ARRAY_FILTER_USE_KEY,
+                );
             }
+        }
 
-            return $carry;
-        }, []);
+        return $this->attachments = $attachments;
     }
 
     /**
@@ -72,14 +85,19 @@ class Gallery implements Castable
      */
     public function getUrls(): array
     {
-        return $this->urls ??= array_reduce($this->ids, function (array $carry, int $postId) {
+        if ($this->urls !== null) {
+            return $this->urls;
+        }
+
+        $urls = [];
+        foreach ($this->ids as $postId) {
             $url = wp_get_attachment_url($postId);
             if (is_string($url) && $url !== '') {
-                $carry[] = $url;
+                $urls[] = $url;
             }
+        }
 
-            return $carry;
-        }, []);
+        return $this->urls = $urls;
     }
 
     /**

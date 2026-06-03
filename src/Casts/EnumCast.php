@@ -12,6 +12,9 @@ use Spatie\LaravelData\Support\Creation\CreationContext;
 use Spatie\LaravelData\Support\DataProperty;
 use Throwable;
 
+use function is_int;
+use function is_string;
+
 class EnumCast implements Cast, IterableItemCast
 {
     public function __construct(
@@ -19,6 +22,12 @@ class EnumCast implements Cast, IterableItemCast
     ) {
     }
 
+    /**
+     * @param DataProperty         $property
+     * @param mixed                $value
+     * @param array<string, mixed> $properties
+     * @param CreationContext      $context
+     */
     public function cast(DataProperty $property, mixed $value, array $properties, CreationContext $context): BackedEnum|null
     {
         /** @var class-string<BackedEnum> $type */
@@ -31,6 +40,12 @@ class EnumCast implements Cast, IterableItemCast
         );
     }
 
+    /**
+     * @param DataProperty         $property
+     * @param mixed                $value
+     * @param array<string, mixed> $properties
+     * @param CreationContext      $context
+     */
     public function castIterableItem(DataProperty $property, mixed $value, array $properties, CreationContext $context): BackedEnum|null
     {
         /** @var class-string<BackedEnum> $type */
@@ -65,9 +80,11 @@ class EnumCast implements Cast, IterableItemCast
             return $value;
         }
 
-        /** @var class-string<BackedEnum> $type */
+        if (!is_int($value) && !is_string($value)) {
+            return $default;
+        }
+
         try {
-            // @phpstan-ignore-next-line
             return $type::from($value);
         } catch (Throwable $e) {
             if ($default !== null) {

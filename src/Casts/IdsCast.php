@@ -8,7 +8,6 @@ use Spatie\LaravelData\Casts\Cast;
 use Spatie\LaravelData\Support\Creation\CreationContext;
 use Spatie\LaravelData\Support\DataProperty;
 
-use function array_reduce;
 use function is_array;
 
 class IdsCast implements Cast
@@ -37,13 +36,14 @@ class IdsCast implements Cast
             return [];
         }
 
-        return array_reduce($value, function (array $carry, mixed $item) {
+        $ids = [];
+        foreach ($value as $item) {
             $val = IdCast::castValue($item);
             if ($val !== null) {
-                $carry[] = $val;
+                $ids[] = $val;
             }
+        }
 
-            return $carry;
-        }, []);
+        return $ids;
     }
 }
